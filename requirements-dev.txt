@@ -1,0 +1,12 @@
+black
+rope==0.14.0
+pep8
+pylint
+flake8
+doc8
+pre-commit
+codecov
+coverage
+unittest-xml-reporting
+# monkeytype
+mypy

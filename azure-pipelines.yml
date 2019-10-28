@@ -1,0 +1,105 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: prebuild
+  jobs:
+  - job: 'code_check'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+    continueOnError: true
+
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+        targetType: 'inline'
+
+    - script: |
+        python -m compileall .
+      displayName: 'Compile solution'
+
+    - script: |
+        python -m pip install flake8
+        flake8 ./dags
+      displayName: 'Run lint tests'
+
+  - job: 'type_check'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+    continueOnError: true
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+        targetType: 'inline'
+    - script: |
+        python -m pip install mypy
+        make typecheck
+      displayName: 'Run typecheck'
+
+- stage: test
+  jobs:
+  - job: 'tests'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+    displayName: Tests
+
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+        targetType: 'inline'
+
+    - script: |
+        pip install codecov
+        pip install -r requirements.txt -r requirements-dev.txt
+        coverage erase
+        coverage run -m unittest discover -p '*_test.py'
+        coverage report -m
+        coverage html
+        codecov --token $CODECOV_TOKEN
+      displayName: 'Test with pytest && publish code coverage'
+      env:
+        CODECOV_TOKEN: $(CODECOV_TOKEN)
+        PL: $(PL)
+        EPG_INDEX_URL: $(EPG_INDEX_URL)
+
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+
+    - script: |
+        pip install -r requirements.txt -r requirements-dev.txt
+        python -m xmlrunner discover -p '*_test.py' -o ./build/reports
+      env:
+        PL: $(PL)
+        EPG_INDEX_URL: $(EPG_INDEX_URL)
+      displayName: 'Unittests generate reports'
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: '$(System.DefaultWorkingDirectory)/build/reports/TEST-*.xml'
+        testRunTitle: 'Publish test results for Python $(python.version)'

@@ -1,0 +1,25 @@
+[run]
+branch = True
+source =
+    dags/
+omit =
+    */itests/*
+    **/__init__.py
+[paths]
+source =
+    dags/
+[report]
+exclude_lines =
+    raise NotImplementedError.*
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+[html]
+title = Synker airflow coverage report
+[xml]
+output=coverage.xml
