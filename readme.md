@@ -9,6 +9,12 @@ Many default filters was provided for:
 - grouping streams
 - hide groups
 - and many others filters
+
+## Examples
+
+```bash
+xpl
+```
     
 ## TODO
 
@@ -17,8 +23,8 @@ Many default filters was provided for:
 - [ ] Cli setup package (linux/mac)
 - [ ] Filter: group order
 - [ ] Filter: VOD group ?
-- [ ] Enhance reporting by filter
-- [ ] Enhance tests
+- [ ] Enhancing reporting by filter
+- [ ] Enhancing tests
 - [ ] Packaging playlist generation
 - [ ] Ability to execute an external filter from url
 

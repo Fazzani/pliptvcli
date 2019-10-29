@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32fe434a-b955-4208-b7a2-5b6db1d37088" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pliptv/cli_questions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pliptv/azure_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/azure_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pliptv/config_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/config_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pliptv/epg_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/epg_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pliptv/picons_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/picons_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pliptv/pl_filters/epg_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/pl_filters/epg_filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pliptv/pl_filters/picon_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/pl_filters/picon_filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pliptv/utils/log/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/utils/log/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
