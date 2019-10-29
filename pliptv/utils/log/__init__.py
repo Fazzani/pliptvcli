@@ -1,6 +1,7 @@
 import logging.config
 import os
 
+import coloredlogs
 import yaml
 
 
@@ -12,6 +13,7 @@ def setup_logging(
     """Setup logging configuration
 
     """
+    coloredlogs.auto_install()
     path = default_path
     value = os.getenv(env_key, None)
     if value:

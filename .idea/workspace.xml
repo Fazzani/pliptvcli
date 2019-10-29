@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="32fe434a-b955-4208-b7a2-5b6db1d37088" name="Default Changelist" comment="" />
+    <list default="true" id="32fe434a-b955-4208-b7a2-5b6db1d37088" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pliptv/cli_questions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/azure_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/azure_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/config_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/config_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/epg_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/epg_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/picons_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/picons_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/pl_filters/epg_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/pl_filters/epg_filter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/pl_filters/picon_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/pl_filters/picon_filter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/utils/log/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/utils/log/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +31,14 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1SqrkKfv9VKL0sIWdHXfVII2UUC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -49,7 +72,7 @@
         <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
         <ENTRIES>
           <ENTRY IS_ENABLED="true" PARSER="runconfig" />
-          <ENTRY IS_ENABLED="true" PARSER="env" PATH=".env" />
+          <ENTRY IS_ENABLED="false" PARSER="env" PATH=".env" />
         </ENTRIES>
       </EXTENSION>
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
@@ -79,5 +102,28 @@
       <updated>1572302108892</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

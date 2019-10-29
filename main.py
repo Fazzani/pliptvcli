@@ -1,12 +1,11 @@
 import logging
+import os
 
-from pliptv.config_loader import playlist_config
-from pliptv.m3u_utils import (
-    download_file,
-    load_filters,
-    save_pl,
-    apply_filters,
-)
+import click
+
+from pliptv.cli_questions import ask_information, log
+from pliptv.config_loader import PlaylistConfig
+from pliptv.m3u_utils import download_file, load_filters, save_pl, apply_filters
 from pliptv.models.streams import M3u
 from pliptv.utils.log import setup_logging
 
@@ -15,36 +14,58 @@ setup_logging()
 LOG = logging.getLogger(__name__)
 
 
+@click.command()
 def main() -> None:
+    """
+    Extensible CLI m3u playlist manager
+    many default filters was provided for:
+    - auto matching EPG
+    - auto matching logos
+    - cleaning stream names
+    - grouping streams
+    - hide groups
+    - and many others
+
+    """
+
+    log("XPL CLI", color="blue", figlet=True)
+    log(main.__doc__, "green")
+
+    pl_info = ask_information()
+
     try:
-        LOG.info(f"Downloading playlist from {playlist_config.url}")
-        lines = download_file(playlist_config.url)
-        LOG.debug(f"{len(lines)} retrieved for the playlist {playlist_config.url}")
+        playlist_config = PlaylistConfig(
+            pl_info.get("playlist_config_path", os.getenv("CONFIG_FILE_PATH"))
+        )
+        pl_url = pl_info.get("playlist_url", playlist_config.url)
+        log(f"Downloading playlist from {pl_url}", "white")
+        lines = download_file(pl_url)
+        log(f"{len(lines)} retrieved for the playlist {pl_url}", "white")
 
         m3u = M3u.from_list("playlist", lines)
 
-        LOG.debug(f"Loading filters")
+        log(f"Loading filters", "white")
         filters = load_filters()
-        LOG.debug(f"{len(filters)} loaded..")
+        log(f"{len(filters)} loaded..", "white")
 
-        LOG.info(f"Applying filters on {m3u.name}")
+        log(f"Applying filters on {m3u.name}", "white")
         pl_filtred = list(
             map(lambda _: apply_filters(_.meta, filters, playlist_config), m3u)
         )
         assert pl_filtred
 
-        LOG.info(f"Saving {m3u.name} into ")
+        log(f"Saving {m3u.name} into ", "white")
         url = save_pl(m3u)
-        LOG.info(f"Generated playlist url for {m3u.name}: {url}")
+        log(f"Generated playlist url for {m3u.name}: {url}", "white")
 
         # Display report
         # get_report(m3u)
 
     except Exception as err:
-        LOG.error("Unexpected error:", err)
+        log(f"Unexpected error: {err}", "red")
         raise
     finally:
-        LOG.info("The end.")
+        log("The end.", "green")
 
 
 def get_report(m3u):
@@ -67,5 +88,3 @@ def get_report(m3u):
 
 if __name__ == "__main__":
     main()
-
-

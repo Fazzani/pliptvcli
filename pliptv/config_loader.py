@@ -36,10 +36,10 @@ class PlaylistConfig:
                 LOG.error(exc)
 
 
-path = os.getenv("CONFIG_FILE_PATH")
-config_path_from_env = (
-    os.path.expandvars(path)
-    if path
-    else "./itests/pliptv/pl_filters/data/config_playlist.yaml"
-)
-playlist_config = PlaylistConfig(config_path_from_env)
+# path = os.getenv("CONFIG_FILE_PATH")
+# config_path_from_env = (
+#     os.path.expandvars(path)
+#     if path
+#     else "./itests/pliptv/pl_filters/data/config_playlist.yaml"
+# )
+# playlist_config = PlaylistConfig(config_path_from_env)

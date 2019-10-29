@@ -4,8 +4,10 @@
 from __future__ import print_function
 
 import os
+from functools import lru_cache
 
 import requests
+import validators
 
 
 class Picon(object):
@@ -13,17 +15,15 @@ class Picon(object):
         self.__dict__ = data
 
 
+@lru_cache(maxsize=10000)
 def get_picons_index(gist_url: str) -> Picon:
+    if not validators.url(gist_url):
+        gist_url = str(os.getenv("GIST_PICONS_URL"))
+        if not validators.url(gist_url):
+            raise ValueError(f"{gist_url} not a valid url")
+
     response = requests.get(gist_url)
     if response.ok:
         data = Picon(response.json())
         return data
     return Picon(None)
-
-
-if __name__ == "__main__":
-    url = os.getenv("GIST_PICONS_URL")
-    assert url
-    index = get_picons_index(url)
-
-PICONS = get_picons_index(str(os.getenv("GIST_PICONS_URL")))

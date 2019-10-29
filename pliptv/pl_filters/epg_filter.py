@@ -3,7 +3,7 @@ from functools import reduce, lru_cache
 from typing import Optional, Any, List
 
 from pliptv.config_loader import PlaylistConfig
-from pliptv.epg_service import EPG
+from pliptv.epg_service import get_epg_index
 from pliptv.m3u_utils import translate_channel_name
 from pliptv.models.epg import Epg, Channel
 from pliptv.models.streams import StreamMeta
@@ -30,7 +30,7 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         Returns:
             Stream meta data
         """
-        epg: Epg = EPG
+        epg: Epg = get_epg_index(self.filter_config.index_url)
         assert epg
 
         ratio: float = 0.0

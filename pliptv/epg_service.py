@@ -4,15 +4,22 @@
 from __future__ import print_function
 
 import os
-from pprint import pprint
+from functools import lru_cache
 
 import requests
+import validators
 
 from pliptv.models.epg import Epg, epg_from_dict
 
 
+@lru_cache(maxsize=10000)
 def get_epg_index(epg_url: str) -> Epg:
     assert epg_url, "url : must be not empty"
+    if not validators.url(epg_url):
+        epg_url = str(os.getenv("EPG_INDEX_URL"))
+        if not validators.url(epg_url):
+            raise ValueError(f"{epg_url} not a valid url")
+
     r = requests.get(epg_url)
     epg_string = r.json()
     assert epg_string, "No json data"
@@ -22,13 +29,3 @@ def get_epg_index(epg_url: str) -> Epg:
 def generate_channel_names(epg: Epg) -> None:
     for c in epg.tv.channel:
         c.display_name.name = c.display_name.name.replace("hd", "")
-
-
-if __name__ == "__main__":
-    url = os.getenv("EPG_INDEX_URL")
-    assert url
-    index = get_epg_index(url)
-    pprint(index.tv.channel)
-
-EPG = get_epg_index(str(os.getenv("EPG_INDEX_URL")))
-generate_channel_names(EPG)

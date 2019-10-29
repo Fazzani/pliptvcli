@@ -1,9 +1,9 @@
 import logging
 from functools import lru_cache
 
-from pliptv.config_loader import playlist_config, PlaylistConfig
+from pliptv.config_loader import PlaylistConfig
 from pliptv.models.streams import StreamMeta
-from pliptv.picons_service import PICONS
+from pliptv.picons_service import get_picons_index
 from pliptv.pl_filters.filter_abc import LoggingFilterAbcMixin, FilterABC
 from pliptv.utils.log.decorators import func_logger
 
@@ -26,13 +26,9 @@ class PiconFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
             Tuple[Optional[str], str] -- culture, clean stream name
         """
         key = f"{value.display_name.lower()}".replace(" ", "")
-        if key in PICONS.__dict__:
-            value.tvg.tvg_logo = PICONS.__dict__[key]
+        picons = get_picons_index(self.filter_config.source_url)
+        if key in picons.__dict__:
+            value.tvg.tvg_logo = picons.__dict__[key]
             LOG.info(f"Picons: matched {value.display_name}: {value.tvg.tvg_logo}")
 
         return value
-
-
-if __name__ == "__main__":
-    filter = PiconFilter(playlist_config)
-    filter.apply(None)
