@@ -106,7 +106,7 @@ stages:
 
 - stage: Package
   jobs:
-  - job: 'set python version'
+  - job: 'SettingPythonVersion'
     pool:
       vmImage: 'ubuntu-16.04'
     strategy:
