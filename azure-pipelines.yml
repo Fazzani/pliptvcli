@@ -113,7 +113,7 @@ stages:
       matrix:
         Python37:
           python.version: '3.7'
-    displayName: Set_python_version
+    displayName: "Setting python version"
 
     steps:
     - task: UsePythonVersion@0
