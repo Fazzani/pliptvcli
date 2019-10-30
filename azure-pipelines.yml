@@ -32,7 +32,7 @@ stages:
 
     - script: |
         python -m pip install flake8
-        flake8 ./dags
+        flake8 ./pliptv
       displayName: 'Run lint tests'
 
   - job: 'type_check'
