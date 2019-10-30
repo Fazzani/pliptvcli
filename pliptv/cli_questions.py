@@ -2,6 +2,7 @@ import os
 
 import validators
 from PyInquirer import Token, ValidationError, Validator, prompt, style_from_dict
+from termcolor import colored
 
 from pyfiglet import figlet_format
 
@@ -12,10 +13,6 @@ try:
 except ImportError:
     colorama = None
 
-try:
-    from termcolor import colored
-except ImportError:
-    colored = None
 
 style = style_from_dict(
     {

@@ -112,6 +112,7 @@ def save_pl(pl: M3u) -> str:
     """Save playlist file on azure and return shorten url from bit"""
     url = upload_txt_to_azure(f"{pl.name}.m3u", str(pl))
     at = os.getenv("BITLY_ACCESS_TOKEN")
+    assert at
     return shorten_url(url, at)
 
 

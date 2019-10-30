@@ -1,5 +1,7 @@
 # XPL
 
+[![Build Status](https://dev.azure.com/fazzaniheni/XPL/_apis/build/status/Fazzani.pliptvcli?branchName=master)](https://dev.azure.com/fazzaniheni/XPL/_build/latest?definitionId=1&branchName=master)
+
 Simple extensible m3u playlist manager cli.
 
 Many default filters was provided for:

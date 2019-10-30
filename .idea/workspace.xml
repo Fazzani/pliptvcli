@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32fe434a-b955-4208-b7a2-5b6db1d37088" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/itests/pliptv/pl_filters/filters_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/itests/pliptv/pl_filters/filters_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/cli_questions.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/cli_questions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +40,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.filters_test.py">
+  <component name="RunManager" selected="Python tests.Unittests for filters_test.FiltersTests">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pliptv" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -70,6 +73,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Unittests for filters_test.FiltersTests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="pliptv" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/itests/pliptv/pl_filters" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;filters_test.FiltersTests&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="filters_test.py" type="tests" factoryName="Unittests" temporary="true">
       <module name="pliptv" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -99,9 +116,11 @@
     <list>
       <item itemvalue="Python.main" />
       <item itemvalue="Python tests.filters_test.py" />
+      <item itemvalue="Python tests.Unittests for filters_test.FiltersTests" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Unittests for filters_test.FiltersTests" />
         <item itemvalue="Python tests.filters_test.py" />
         <item itemvalue="Python.main" />
       </list>
@@ -132,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572420647135</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="FIX BUILD">
+      <created>1572420861254</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1572420861254</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
