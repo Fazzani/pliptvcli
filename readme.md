@@ -20,14 +20,15 @@ xpl
     
 ## TODO
 
-- [ ] Azure build
+- [x] Azure build
 - [ ] [Cli dev][cli_dev]
-- [ ] Cli setup package (linux/mac)
+- [ ] [Cli setup package (linux/mac)][cli_pkg] (versionning by git tag)
 - [ ] Filter: group order
 - [ ] Filter: VOD group ?
 - [ ] Enhancing reporting by filter
 - [ ] Enhancing tests
-- [ ] Packaging playlist generation
+- [ ] Enhancing playlist export (gist, azure, etc...)
 - [ ] Ability to execute an external filter from url
 
 [cli_dev]:https://codeburst.io/building-beautiful-command-line-interfaces-with-python-26c7e1bb54df
+[cli_pkg]:https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html

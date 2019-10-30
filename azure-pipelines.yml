@@ -103,3 +103,33 @@ stages:
       inputs:
         testResultsFiles: '$(System.DefaultWorkingDirectory)/build/reports/TEST-*.xml'
         testRunTitle: 'Publish test results for Python $(python.version)'
+
+- stage: Package
+  jobs:
+  - job: 'set python version'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+    displayName: Set_python_version
+
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+        targetType: 'inline'
+
+    - script: |
+        apt-get update -qy
+        apt-get install -y python-dev python-pip
+        pip install --user --upgrade setuptools wheel
+        pip install -r requirements.txt
+        python setup.py sdist bdist_wheel
+      displayName: 'Packaging'
+    - script: |
+        pip install --user --upgrade twine
+        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+      displayName: 'Publishing package'
+
