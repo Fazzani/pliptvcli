@@ -2,7 +2,7 @@ import os
 import unittest
 import xmlrunner
 
-from pliptv.config_loader import playlist_config
+from pliptv.config_loader import PlaylistConfig
 from pliptv.models.streams import StreamMeta
 from pliptv.pl_filters.display_name_filter import DisplayNameFilter
 from pliptv.pl_filters.filter_abc import FilterABC
@@ -16,8 +16,13 @@ from pliptv.pl_filters.shift_filter import ShiftFilter
 
 
 class FiltersTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.playlist_config = PlaylistConfig(
+            os.path.expandvars(os.getenv("CONFIG_FILE_PATH"))
+        )
+
     def test_shift_filter_ok(self):
-        pl_filter = ShiftFilter(playlist_config.config)
+        pl_filter = ShiftFilter(self.playlist_config)
 
         test_suite = [
             (StreamMeta("fr: name1 +1"), "1", "fr: name1"),
@@ -33,7 +38,7 @@ class FiltersTests(unittest.TestCase):
                 self.assertTrue(res.tvg.tvg_shift == val[1])
 
     def test_clean_name_filter_ok(self):
-        pl_filter = DisplayNameFilter(playlist_config.config)
+        pl_filter = DisplayNameFilter(self.playlist_config)
 
         test_suite = [
             (StreamMeta("fr: name1"), "fr", "name1"),
@@ -49,7 +54,7 @@ class FiltersTests(unittest.TestCase):
                 self.assertTrue(res[StreamMeta.CULTURE_KEY] == val[1])
 
     def test_quality_filter_ok(self):
-        pl_filter = QualityFilter(playlist_config.config)
+        pl_filter = QualityFilter(self.playlist_config)
 
         test_suite = [
             (StreamMeta("name1 1080p"), "fhd", "name1"),
@@ -71,9 +76,7 @@ class FiltersTests(unittest.TestCase):
 
     def test_filter_loader(self):
         modules = load_modules_from_path(
-            os.path.join(
-                os.path.dirname(__file__), "../../../dags/common/playlists/pl_filters"
-            ),
+            os.path.join(os.path.dirname(__file__), "../../../pliptv/pl_filters"),
             pattern=r".+_filter.py$",
         )
         self.assertIsNotNone(modules)

@@ -12,14 +12,14 @@ check:
 	flake8 itests
 
 pylint:
-	pylint dags
+	pylint pliptv
 	pylint --load-plugins tests.linter --disable=I,E,W,R,C,F --enable C9999,C9998 $(TESTS)
 
 test:
 	python -m xmlrunner discover -p $(TESTS_PATTERN) -o $(TESTS_REPORTS_PATH)
 
 typecheck:
-	mypy --ignore-missing-imports --follow-imports=skip -p dags  --strict-optional --warn-no-return #--disallow-untyped-defs
+	mypy --ignore-missing-imports --follow-imports=skip -p pliptv  --strict-optional --warn-no-return #--disallow-untyped-defs
 
 covreport:
 	coverage erase

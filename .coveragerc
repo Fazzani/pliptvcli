@@ -1,13 +1,13 @@
 [run]
 branch = True
 source =
-    dags/
+    pliptv/
 omit =
     */itests/*
     **/__init__.py
 [paths]
 source =
-    dags/
+    pliptv/
 [report]
 exclude_lines =
     raise NotImplementedError.*
@@ -20,6 +20,6 @@ exclude_lines =
     if 0:
     if __name__ == .__main__.:
 [html]
-title = Synker airflow coverage report
+title = XPL coverage report
 [xml]
 output=coverage.xml
