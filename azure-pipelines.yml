@@ -113,7 +113,7 @@ stages:
       matrix:
         Python37:
           python.version: '3.7'
-    displayName: SettingPythonVersion
+    displayName: 'Setting Python Version'
 
     steps:
     - task: UsePythonVersion@0
@@ -132,4 +132,6 @@ stages:
         pip install --user --upgrade twine
         python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
       displayName: 'Publishing package'
+
+#      TODO: Publish to PYPY (not staging) with an approver
 
