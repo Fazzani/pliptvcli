@@ -17,7 +17,12 @@ from pliptv.pl_filters.shift_filter import ShiftFilter
 
 class FiltersTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.playlist_config = PlaylistConfig("./data/config_playlist.yaml")
+        self.playlist_config = PlaylistConfig(
+            os.path.join(
+                os.path.dirname(os.path.realpath(__file__)),
+                "./data/config_playlist.yaml",
+            )
+        )
 
     def test_shift_filter_ok(self):
         pl_filter = ShiftFilter(self.playlist_config)
