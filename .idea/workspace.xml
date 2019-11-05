@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="32fe434a-b955-4208-b7a2-5b6db1d37088" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/azure-pipelines.yml" beforeDir="false" afterPath="$PROJECT_DIR$/azure-pipelines.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/azure_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/azure_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -198,7 +199,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572472293394</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="packaging cli">
+      <created>1572971352706</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1572971352706</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
