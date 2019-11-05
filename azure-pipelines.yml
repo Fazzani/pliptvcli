@@ -133,7 +133,7 @@ stages:
         pythonUploadServiceConnection: 'test_pypi'
     - script: |
         pip install --user --upgrade twine
-        twine upload -r xpl/test_pypi --config-file $(PYPIRC_PATH) dist/*
+        python -m twine upload -r xpl/test_pypi --config-file $(PYPIRC_PATH) dist/*
 #        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
       displayName: 'Publishing package'
 
