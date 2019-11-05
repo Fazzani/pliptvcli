@@ -141,6 +141,44 @@ stages:
 #        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
       displayName: 'Publishing package'
 
-#      TODO: Publish to PYPY (not staging) with an approver
+  - stage: PublishProd
+    jobs:
+      # track deployments on the environment
+      - deployment: DeployPackage
+        pool:
+          vmImage: 'Ubuntu-16.04'
+        environment: 'Pypi_repo_prod'
+        strategy:
+          # default deployment strategy
+          runOnce:
+            deploy:
+              steps:
+                - task: UsePythonVersion@0
+                  inputs:
+                    versionSpec: '$(python.version)'
+                    targetType: 'inline'
+
+                - script: |
+                    pip install twine
+                    pip install wheel
+                    python setup.py sdist bdist_wheel
+                  displayName: 'Tools setup'
+
+                - script: |
+                    python setup.py sdist bdist_wheel
+                  displayName: 'Packaging'
+
+                - task: TwineAuthenticate@1
+                  displayName: 'Twine Authenticate'
+                  inputs:
+                    pythonUploadServiceConnection: prod_pypi
+
+                - script: |
+                    python -m twine upload --verbose -r "prod_pypi" --config-file $(PYPIRC_PATH) dist/*
+                  #        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+                  displayName: 'Publishing package'
+
+#      TODO: Add approver to prod env
+#      TODO: Create pipeline template for publishing pypi package
 #      TODO: Bumpversion with git tags
 
