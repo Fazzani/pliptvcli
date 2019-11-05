@@ -122,7 +122,6 @@ stages:
         targetType: 'inline'
 
     - script: |
-        apt-get update -qy
         apt-get install -y python-dev python-pip
         pip install --user --upgrade setuptools wheel
         pip install -r requirements.txt
@@ -133,7 +132,7 @@ stages:
         pythonUploadServiceConnection: 'test_pypi'
     - script: |
         pip install --user --upgrade twine
-        python -m twine upload -r xpl/test_pypi --config-file $(PYPIRC_PATH) dist/*
+        python -m twine upload -r test_pypi --config-file $(PYPIRC_PATH) dist/*
 #        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
       displayName: 'Publishing package'
 
