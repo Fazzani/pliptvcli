@@ -122,14 +122,20 @@ stages:
         targetType: 'inline'
 
     - script: |
-        apt-get install -y python-dev python-pip
-        pip install --user --upgrade setuptools wheel
-        pip install -r requirements.txt
+        pip install twine
+        pip install wheel
+        python setup.py sdist bdist_wheel
+      displayName: 'Tools setup'
+
+    - script: |
         python setup.py sdist bdist_wheel
       displayName: 'Packaging'
-    - task: TwineAuthenticate@0
+
+    - task: TwineAuthenticate@1
+      displayName: 'Twine Authenticate'
       inputs:
         pythonUploadServiceConnection: 'test_pypi'
+
     - script: |
         pip install --user --upgrade twine
         python -m twine upload -r test_pypi --config-file $(PYPIRC_PATH) dist/*
