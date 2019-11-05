@@ -134,11 +134,10 @@ stages:
     - task: TwineAuthenticate@1
       displayName: 'Twine Authenticate'
       inputs:
-        pythonUploadServiceConnection: 'test_pypi'
+        pythonUploadServiceConnection: test_pypi
 
     - script: |
-        pip install --user --upgrade twine
-        python -m twine upload -r test_pypi --config-file $(PYPIRC_PATH) dist/*
+        python -m twine upload --verbose -r "test_pypi" --config-file $(PYPIRC_PATH) dist/*
 #        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
       displayName: 'Publishing package'
 
