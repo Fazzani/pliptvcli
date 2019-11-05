@@ -4,7 +4,7 @@
     <list default="true" id="32fe434a-b955-4208-b7a2-5b6db1d37088" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pliptv/azure_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/azure_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/m3u_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/m3u_utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -206,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572971352706</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="upgrade azure blob package">
+      <created>1572988136408</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1572988136408</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,7 +232,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="FIX BUILD" />
     <MESSAGE value="packaging cli" />
-    <option name="LAST_COMMIT_MESSAGE" value="packaging cli" />
+    <MESSAGE value="upgrade azure blob package" />
+    <option name="LAST_COMMIT_MESSAGE" value="upgrade azure blob package" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
