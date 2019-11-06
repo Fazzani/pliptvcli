@@ -10,3 +10,4 @@ coverage
 unittest-xml-reporting
 # monkeytype
 mypy
+bump2version==0.5.11

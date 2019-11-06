@@ -1,11 +1,12 @@
 parameters:
   vmImage: 'Ubuntu-16.04'
   environment: 'dev'
+  condition: true
 
 stages:
 - stage: DeployPackage_${{parameters.environment}}
   displayName: DeployPackage_${{parameters.environment}}
-  condition: succeeded()
+  condition: ${{ parameters.condition }}
   dependsOn: BuildPackage
   jobs:
   - deployment: DeployPackage
@@ -33,7 +34,6 @@ stages:
 
             - script: |
                 pip install twine
-                ls -lah $(System.ArtifactsDirectory)/xpl/dist/
               displayName: Twine install
 
             - task: TwineAuthenticate@1
