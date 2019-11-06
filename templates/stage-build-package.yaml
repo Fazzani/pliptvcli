@@ -17,16 +17,22 @@ stages:
         inputs:
           versionSpec: '$(python.version)'
           targetType: 'inline'
+
       - script: |
           pip install twine
           pip install wheel
         displayName: 'Tools setup'
+
       - script: |
           python setup.py sdist bdist_wheel
-          ls -la
-          ls -la $(System.DefaultWorkingDirectory)/dist/
         displayName: 'Packaging'
+
+      - task: CopyFiles@2
+        inputs:
+          contents: dist/**
+          targetFolder: $(Build.ArtifactStagingDirectory)
+
       - task: PublishBuildArtifacts@1
         inputs:
-          pathtoPublish: '$(System.DefaultWorkingDirectory)/dist/**'
+          pathtoPublish: $(Build.ArtifactStagingDirectory)
           artifactName: xpl
