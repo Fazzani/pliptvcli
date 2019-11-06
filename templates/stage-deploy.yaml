@@ -5,17 +5,17 @@ parameters:
 stages:
 - stage: DeployPackage_${{parameters.environment}}
   jobs:
-    # track deployments on the environment
+    - job: use_python_version
+      steps:
+        - task: UsePythonVersion@0
+          inputs:
+            versionSpec: '$(python.version)'
+            targetType: 'inline'
     - deployment: DeployPackage
       pool:
         vmImage: ${{ parameters.vmImage }}
-      strategy:
-        matrix:
-          Python37:
-            python.version: '3.7'
       environment: ${{ parameters.environment }}
       strategy:
-        # default deployment strategy
         runOnce:
           deploy:
             steps:
@@ -26,10 +26,6 @@ stages:
                   downloadType: single
                   artifactName: xpl
                   downloadPath: '$(System.ArtifactsDirectory)'
-              - task: UsePythonVersion@0
-                inputs:
-                  versionSpec: '$(python.version)'
-                  targetType: 'inline'
               - task: TwineAuthenticate@1
                 displayName: 'Twine Authenticate to ${{ parameters.environment }}'
                 inputs:
