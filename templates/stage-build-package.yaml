@@ -24,9 +24,9 @@ stages:
       - script: |
           python setup.py sdist bdist_wheel
           ls -la
-          ls -la dist
+          ls -la $(System.DefaultWorkingDirectory)/dist/
         displayName: 'Packaging'
       - task: PublishBuildArtifacts@1
         inputs:
-          pathtoPublish: '$(System.DefaultWorkingDirectory)/dist/*'
+          pathtoPublish: '$(System.DefaultWorkingDirectory)/dist/**'
           artifactName: xpl
