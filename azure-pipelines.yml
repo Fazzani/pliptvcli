@@ -112,5 +112,5 @@ stages:
     vmImage: $(vmImage)
     environment: prod_pypi
 
-#      TODO: Bumpversion with git tags
+#      TODO: Bump2version with git tags
 

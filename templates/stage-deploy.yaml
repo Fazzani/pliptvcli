@@ -33,7 +33,6 @@ stages:
 
             - script: |
                 pip install twine
-                ls -lah $(System.ArtifactsDirectory)/xpl/dist/
               displayName: Twine install
 
             - task: TwineAuthenticate@1
