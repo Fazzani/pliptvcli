@@ -4,7 +4,7 @@ parameters:
   environment: ''
 
 stages:
-- stage: DeployPackage-${{ paramaters.environment }}
+- stage: DeployPackage
   jobs:
     # track deployments on the environment
     - deployment: DeployPackage
