@@ -1,16 +1,9 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 trigger:
 - master
 
 variables:
   vmImage: 'ubuntu-16.04'
   python_version: '3.7'
-
-pool:
-  vmImage: 'ubuntu-latest'
 
 stages:
 - stage: prebuild

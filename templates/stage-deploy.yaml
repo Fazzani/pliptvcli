@@ -9,7 +9,7 @@ stages:
     # track deployments on the environment
     - deployment: DeployPackage
       pool:
-        vmImage: ${{ paramaters.vmImage }}
+        vmImage: $(paramaters.vmImage)
       environment: ${{ paramaters.environment }}
       strategy:
         # default deployment strategy
