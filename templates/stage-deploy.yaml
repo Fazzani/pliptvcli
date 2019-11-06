@@ -28,7 +28,7 @@ stages:
 
             - script: |
                 ls -lah
-                ls -lah xpl
+                ls -lah '$(System.ArtifactsDirectory)/xpl'
               displayName: Debug
 
             - task: TwineAuthenticate@1
@@ -37,5 +37,5 @@ stages:
                 pythonUploadServiceConnection: ${{ parameters.environment }}
 
             - script: |
-                python -m twine upload --verbose -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) xpl/dist/*
+                python -m twine upload --verbose -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) '$(System.ArtifactsDirectory)/xpl/dist/*'
               displayName: 'Publishing package to ${{ parameters.environment }}'
