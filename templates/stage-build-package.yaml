@@ -20,12 +20,11 @@ stages:
       - script: |
           pip install twine
           pip install wheel
-          python setup.py sdist bdist_wheel
-          ls -la
-          ls -la dist
         displayName: 'Tools setup'
       - script: |
           python setup.py sdist bdist_wheel
+          ls -la
+          ls -la dist
         displayName: 'Packaging'
       - task: PublishBuildArtifacts@1
         inputs:
