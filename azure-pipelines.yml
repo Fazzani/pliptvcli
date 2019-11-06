@@ -48,55 +48,55 @@ stages:
         make typecheck
       displayName: 'Run typecheck'
 
-# - stage: test
-#   jobs:
-#   - job: 'tests'
-#     pool:
-#       vmImage: $(vmImage)
-#     strategy:
-#       matrix:
-#         Python37:
-#           python.version: '3.7'
-#     displayName: Tests
+- stage: test
+  jobs:
+  - job: 'tests'
+    pool:
+      vmImage: $(vmImage)
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+    displayName: Tests
 
-#     steps:
-#     - task: UsePythonVersion@0
-#       inputs:
-#         versionSpec: '$(python.version)'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
 
-#     - script: |
-#         pip install codecov
-#         pip install -r requirements.txt -r requirements-dev.txt
-#         coverage erase
-#         coverage run -m unittest discover -p '*_test.py'
-#         coverage report -m
-#         coverage html
-#         codecov --token $CODECOV_TOKEN
-#       displayName: 'Test with pytest && publish code coverage'
-#       env:
-#         CODECOV_TOKEN: $(CODECOV_TOKEN)
-#         PL: $(PL)
-#         EPG_INDEX_URL: $(EPG_INDEX_URL)
+    - script: |
+        pip install codecov
+        pip install -r requirements.txt -r requirements-dev.txt
+        coverage erase
+        coverage run -m unittest discover -p '*_test.py'
+        coverage report -m
+        coverage html
+        codecov --token $CODECOV_TOKEN
+      displayName: 'Test with pytest && publish code coverage'
+      env:
+        CODECOV_TOKEN: $(CODECOV_TOKEN)
+        PL: $(PL)
+        EPG_INDEX_URL: $(EPG_INDEX_URL)
 
-#     - task: PublishCodeCoverageResults@1
-#       inputs:
-#         codeCoverageTool: Cobertura
-#         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-#         reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
-#     - script: |
-#         pip install -r requirements.txt -r requirements-dev.txt
-#         python -m xmlrunner discover -p '*_test.py' -o ./build/reports
-#       env:
-#         PL: $(PL)
-#         EPG_INDEX_URL: $(EPG_INDEX_URL)
-#       displayName: 'Unittests generate reports'
+    - script: |
+        pip install -r requirements.txt -r requirements-dev.txt
+        python -m xmlrunner discover -p '*_test.py' -o ./build/reports
+      env:
+        PL: $(PL)
+        EPG_INDEX_URL: $(EPG_INDEX_URL)
+      displayName: 'Unittests generate reports'
 
-#     - task: PublishTestResults@2
-#       condition: succeededOrFailed()
-#       inputs:
-#         testResultsFiles: '$(System.DefaultWorkingDirectory)/build/reports/TEST-*.xml'
-#         testRunTitle: 'Publish test results for Python $(python.version)'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: '$(System.DefaultWorkingDirectory)/build/reports/TEST-*.xml'
+        testRunTitle: 'Publish test results for Python $(python.version)'
 
 - template: templates/stage-build-package.yaml
   parameters:
@@ -112,7 +112,5 @@ stages:
     vmImage: $(vmImage)
     environment: prod_pypi
 
-#      TODO: Add approver to prod env
-#      TODO: Create pipeline template for publishing pypi package
 #      TODO: Bumpversion with git tags
 
