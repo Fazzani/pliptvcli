@@ -9,6 +9,10 @@ stages:
     - deployment: DeployPackage
       pool:
         vmImage: ${{ parameters.vmImage }}
+      strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
       environment: ${{ parameters.environment }}
       strategy:
         # default deployment strategy
