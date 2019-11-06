@@ -15,6 +15,7 @@ stages:
         runOnce:
           deploy:
             steps:
+              - download: none
               - task: DownloadBuildArtifacts@0
                 inputs:
                   buildType: current
@@ -30,5 +31,5 @@ stages:
                 inputs:
                   pythonUploadServiceConnection: ${{ parameters.environment }}
               - script: |
-                  python -m twine upload --verbose -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) xpl
+                  python -m twine upload --verbose -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) xpl/dist/*
                 displayName: 'Publishing package to ${{ parameters.environment }}'
