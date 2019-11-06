@@ -102,13 +102,11 @@ stages:
 
 - template: templates/stage-deploy.yaml
   parameters:
-    name: Deploy-TEST
     vmImage: $(vmImage)
     environment: test_pypi
 
 - template: templates/stage-deploy.yaml
   parameters:
-    name: Deploy-PROD
     vmImage: $(vmImage)
     environment: prod_pypi
 
