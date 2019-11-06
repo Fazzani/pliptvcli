@@ -1,9 +1,9 @@
 parameters:
   vmImage: 'Ubuntu-16.04'
-  environment: ''
+  environment: 'dev'
 
 stages:
-- stage: DeployPackage-${{parameters.environment}}
+- stage: DeployPackage_${{parameters.environment}}
   jobs:
     # track deployments on the environment
     - deployment: DeployPackage
