@@ -27,9 +27,8 @@ stages:
                 downloadPath: '$(System.ArtifactsDirectory)'
 
             - script: |
-                ls -lah
-                ls -lah '$(System.ArtifactsDirectory)/xpl'
-              displayName: Debug
+                pip install twine
+              displayName: Twine installion
 
             - task: TwineAuthenticate@1
               displayName: 'Twine Authenticate to ${{ parameters.environment }}'
