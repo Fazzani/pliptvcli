@@ -9,8 +9,8 @@ stages:
     # track deployments on the environment
     - deployment: DeployPackage
       pool:
-        vmImage: $(paramaters.vmImage)
-      environment: ${{ paramaters.environment }}
+        vmImage: ${{ parameters.vmImage }}
+      environment: ${{ parameters.environment }}
       strategy:
         # default deployment strategy
         runOnce:
@@ -27,9 +27,9 @@ stages:
                   versionSpec: '$(python.version)'
                   targetType: 'inline'
               - task: TwineAuthenticate@1
-                displayName: 'Twine Authenticate to ${{ paramaters.environment }}'
+                displayName: 'Twine Authenticate to ${{ parameters.environment }}'
                 inputs:
-                  pythonUploadServiceConnection: ${{ paramaters.environment }}
+                  pythonUploadServiceConnection: ${{ parameters.environment }}
               - script: |
-                  python -m twine upload --verbose -r "${{ paramaters.environment }}" --config-file $(PYPIRC_PATH) xpl
-                displayName: 'Publishing package to ${{ paramaters.environment }}'
+                  python -m twine upload --verbose -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) xpl
+                displayName: 'Publishing package to ${{ parameters.environment }}'
