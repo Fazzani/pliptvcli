@@ -4,32 +4,28 @@ parameters:
 
 stages:
 - stage: DeployPackage_${{parameters.environment}}
-  jobs:
-    - job: use_python_version
-      steps:
-        - task: UsePythonVersion@0
-          inputs:
-            versionSpec: '$(python.version)'
-            targetType: 'inline'
-    - deployment: DeployPackage
-      pool:
-        vmImage: ${{ parameters.vmImage }}
-      environment: ${{ parameters.environment }}
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-              - download: none
-              - task: DownloadBuildArtifacts@0
-                inputs:
-                  buildType: current
-                  downloadType: single
-                  artifactName: xpl
-                  downloadPath: '$(System.ArtifactsDirectory)'
-              - task: TwineAuthenticate@1
-                displayName: 'Twine Authenticate to ${{ parameters.environment }}'
-                inputs:
-                  pythonUploadServiceConnection: ${{ parameters.environment }}
-              - script: |
-                  python -m twine upload --verbose -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) xpl/dist/*
-                displayName: 'Publishing package to ${{ parameters.environment }}'
+  displayName: DeployPackage_${{parameters.environment}}
+  condition: succeeded()
+  dependsOn: BuildPackage
+  - deployment: DeployPackage
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - download: none
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                buildType: current
+                downloadType: single
+                artifactName: xpl
+                downloadPath: '$(System.ArtifactsDirectory)'
+            - task: TwineAuthenticate@1
+              displayName: 'Twine Authenticate to ${{ parameters.environment }}'
+              inputs:
+                pythonUploadServiceConnection: ${{ parameters.environment }}
+            - script: |
+                python -m twine upload --verbose -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) xpl/dist/*
+              displayName: 'Publishing package to ${{ parameters.environment }}'
