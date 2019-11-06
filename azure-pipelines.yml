@@ -110,13 +110,13 @@ stages:
 - template: templates/stage-deploy.yaml
   parameters:
     name: Deploy-TEST
-    vmImage: $(vmImage)
+    vmImage: 'ubuntu-16.04'
     environment: test_pypi
 
 - template: templates/stage-deploy.yaml
   parameters:
     name: Deploy-PROD
-    vmImage: $(vmImage)
+    vmImage: 'ubuntu-16.04'
     environment: prod_pypi
 
 #      TODO: Add approver to prod env
