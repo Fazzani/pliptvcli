@@ -5,6 +5,10 @@
 trigger:
 - master
 
+variables:
+  vmImage: 'ubuntu-16.04'
+  python_version: '3.7'
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -13,18 +17,17 @@ stages:
   jobs:
   - job: 'code_check'
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: $(vmImage)
     strategy:
       matrix:
         Python37:
-          python.version: '3.7'
+          python.version: $(python_version)
     continueOnError: true
 
     steps:
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '$(python.version)'
-        targetType: 'inline'
 
     - script: |
         python -m compileall .
@@ -37,17 +40,16 @@ stages:
 
   - job: 'type_check'
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: $(vmImage)
     strategy:
       matrix:
         Python37:
-          python.version: '3.7'
+          python.version: $(python_version)
     continueOnError: true
     steps:
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '$(python.version)'
-        targetType: 'inline'
     - script: |
         python -m pip install mypy
         make typecheck
@@ -57,7 +59,7 @@ stages:
   jobs:
   - job: 'tests'
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: $(vmImage)
     strategy:
       matrix:
         Python37:
@@ -68,7 +70,6 @@ stages:
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '$(python.version)'
-        targetType: 'inline'
 
     - script: |
         pip install codecov
@@ -104,77 +105,19 @@ stages:
         testResultsFiles: '$(System.DefaultWorkingDirectory)/build/reports/TEST-*.xml'
         testRunTitle: 'Publish test results for Python $(python.version)'
 
-- stage: Package_test
-  jobs:
-  - job: 'SettingPythonVersion'
-    pool:
-      vmImage: 'ubuntu-16.04'
-    strategy:
-      matrix:
-        Python37:
-          python.version: '3.7'
-    displayName: 'Setting Python Version'
+- template: templates/stage-build-package.yaml
 
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(python.version)'
-        targetType: 'inline'
+- template: templates/stage-deploy.yaml
+  parameters:
+    name: Deploy-TEST
+    vmImage: $(vmImage)
+    environment: test_pypi
 
-    - script: |
-        pip install twine
-        pip install wheel
-        python setup.py sdist bdist_wheel
-      displayName: 'Tools setup'
-
-    - script: |
-        python setup.py sdist bdist_wheel
-      displayName: 'Packaging'
-
-    - task: TwineAuthenticate@1
-      displayName: 'Twine Authenticate'
-      inputs:
-        pythonUploadServiceConnection: test_pypi
-
-    - script: |
-        python -m twine upload --verbose -r "test_pypi" --config-file $(PYPIRC_PATH) dist/*
-#        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-      displayName: 'Publishing package'
-
-- stage: PublishProd
-  jobs:
-    # track deployments on the environment
-    - deployment: DeployPackage
-      pool:
-        vmImage: 'Ubuntu-16.04'
-      environment: 'Pypi_repo_prod'
-      strategy:
-        # default deployment strategy
-        runOnce:
-          deploy:
-            steps:
-              - task: UsePythonVersion@0
-                inputs:
-                  versionSpec: '$(python.version)'
-                  targetType: 'inline'
-              - script: |
-                  pip install twine
-                   pip install wheel
-                   python setup.py sdist bdist_wheel
-                displayName: 'Tools setup'
-
-              - script: |
-                   python setup.py sdist bdist_wheel
-                displayName: 'Packaging'
-
-              - task: TwineAuthenticate@1
-                displayName: 'Twine Authenticate'
-                inputs:
-                  pythonUploadServiceConnection: prod_pypi
-
-              - script: |
-                   python -m twine upload --verbose -r "prod_pypi" --config-file $(PYPIRC_PATH) dist/*
-                displayName: 'Publishing package'
+- template: templates/stage-deploy.yaml
+  parameters:
+    name: Deploy-PROD
+    vmImage: $(vmImage)
+    environment: prod_pypi
 
 #      TODO: Add approver to prod env
 #      TODO: Create pipeline template for publishing pypi package

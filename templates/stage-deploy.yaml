@@ -1,0 +1,37 @@
+parameters:
+  name: ''  # defaults for any parameters that aren't specified
+  vmImage: 'Ubuntu-16.04'
+  environment: ''
+
+stages:
+- jobs:
+    # track deployments on the environment
+    - deployment: DeployPackage
+      pool:
+        vmImage: ${{ paramaters.vmImage }}
+      environment: ${{ paramaters.environment }}
+      strategy:
+        # default deployment strategy
+        runOnce:
+          deploy:
+            steps:
+              - task: DownloadBuildArtifacts@0
+                inputs:
+                  buildType: current
+                  downloadType: single
+                  artifactName: xpl
+                  downloadPath: '$(System.ArtifactsDirectory)'
+
+              - task: UsePythonVersion@0
+                inputs:
+                  versionSpec: '$(python.version)'
+                  targetType: 'inline'
+
+              - task: TwineAuthenticate@1
+                displayName: 'Twine Authenticate to ${{ paramaters.environment }}'
+                inputs:
+                  pythonUploadServiceConnection: ${{ paramaters.environment }}
+
+              - script: |
+                   python -m twine upload --verbose -r "${{ paramaters.environment }}" --config-file $(PYPIRC_PATH) xpl
+                displayName: 'Publishing package to ${{ paramaters.environment }}'

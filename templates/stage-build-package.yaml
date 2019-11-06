@@ -1,0 +1,21 @@
+stages:
+- stage: BuildPackage
+  jobs:
+  - job: BuildPackage
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(python.version)'
+          targetType: 'inline'
+      - script: |
+          pip install twine
+           pip install wheel
+           python setup.py sdist bdist_wheel
+        displayName: 'Tools setup'
+      - script: |
+           python setup.py sdist bdist_wheel
+        displayName: 'Packaging'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(System.DefaultWorkingDirectory)/dist/*'
+          artifactName: xpl
