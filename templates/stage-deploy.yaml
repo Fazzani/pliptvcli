@@ -7,10 +7,12 @@ stages:
   displayName: DeployPackage_${{parameters.environment}}
   condition: succeeded()
   dependsOn: BuildPackage
-  - deployment:
+  jobs:
+  - deployment: DeployPackage
     pool:
       vmImage: ${{ parameters.vmImage }}
     environment: ${{ parameters.environment }}
+    displayName: "Deploy to ${{ parameters.environment }}"
     strategy:
       runOnce:
         deploy:
