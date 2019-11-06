@@ -19,6 +19,11 @@ stages:
           steps:
             - download: none
 
+            - task: UsePythonVersion@0
+              inputs:
+                versionSpec: '3.7'
+                targetType: 'inline'
+
             - task: DownloadBuildArtifacts@0
               inputs:
                 buildType: current
