@@ -28,7 +28,8 @@ stages:
 
             - script: |
                 pip install twine
-              displayName: Twine installion
+                ls -lah $(System.ArtifactsDirectory)/xpl/dist/
+              displayName: Twine install
 
             - task: TwineAuthenticate@1
               displayName: 'Twine Authenticate to ${{ parameters.environment }}'
@@ -36,5 +37,5 @@ stages:
                 pythonUploadServiceConnection: ${{ parameters.environment }}
 
             - script: |
-                python -m twine upload --skip-existing -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) '$(System.ArtifactsDirectory)/xpl/dist/*'
+                python -m twine upload --skip-existing -r "${{ parameters.environment }}" --config-file $(PYPIRC_PATH) "$(System.ArtifactsDirectory)/xpl/dist/*"
               displayName: 'Publishing package to ${{ parameters.environment }}'
