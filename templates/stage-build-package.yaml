@@ -1,21 +1,37 @@
+parameters:
+  vmImage: 'Ubuntu-16.04'
+
 stages:
 - stage: BuildPackage
   jobs:
   - job: BuildPackage
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+
     steps:
       - task: UsePythonVersion@0
         inputs:
           versionSpec: '$(python.version)'
           targetType: 'inline'
+
       - script: |
-          pip install twine
-           pip install wheel
-           python setup.py sdist bdist_wheel
+          pip install wheel
         displayName: 'Tools setup'
+
       - script: |
-           python setup.py sdist bdist_wheel
+          python setup.py sdist bdist_wheel
         displayName: 'Packaging'
+
+      - task: CopyFiles@2
+        inputs:
+          contents: dist/**
+          targetFolder: $(Build.ArtifactStagingDirectory)
+
       - task: PublishBuildArtifacts@1
         inputs:
-          pathtoPublish: '$(System.DefaultWorkingDirectory)/dist/*'
+          pathtoPublish: $(Build.ArtifactStagingDirectory)
           artifactName: xpl
