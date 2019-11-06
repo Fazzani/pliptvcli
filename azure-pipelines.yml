@@ -99,6 +99,8 @@ stages:
         testRunTitle: 'Publish test results for Python $(python.version)'
 
 - template: templates/stage-build-package.yaml
+  parameters:
+    vmImage: $(vmImage)
 
 - template: templates/stage-deploy.yaml
   parameters:
