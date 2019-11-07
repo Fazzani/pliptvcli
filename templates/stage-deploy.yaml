@@ -6,7 +6,7 @@ parameters:
 stages:
 - stage: DeployPackage_${{parameters.environment}}
   displayName: DeployPackage_${{parameters.environment}}
-  condition: $[ parameters.condition ]
+  condition: $[{{parameters.condition}}]
   dependsOn: BuildPackage
   jobs:
   - deployment: DeployPackage
