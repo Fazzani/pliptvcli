@@ -1,11 +1,12 @@
 parameters:
   vmImage: 'Ubuntu-16.04'
   environment: 'dev'
+  condition: succeeded()
 
 stages:
 - stage: DeployPackage_${{parameters.environment}}
   displayName: DeployPackage_${{parameters.environment}}
-  condition: succeeded()
+  condition: $[ parameters.condition ]
   dependsOn: BuildPackage
   jobs:
   - deployment: DeployPackage
