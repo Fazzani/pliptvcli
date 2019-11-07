@@ -1,7 +1,7 @@
 parameters:
   vmImage: 'Ubuntu-16.04'
   environment: 'dev'
-  condition: ${{ true }}
+  condition: true
 
 stages:
 - stage: DeployPackage_${{parameters.environment}}
