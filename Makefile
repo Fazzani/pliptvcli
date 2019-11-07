@@ -45,8 +45,12 @@ create_env:
 remove_env:
 	conda deactivate && conda remove --name pliptv --all
 
-bv:
+bv_patch:
+	bumpversion patch
+bv_min:
 	bumpversion minor
+bv_maj:
+	bumpversion major
 
 .PHONY: mrproper
 
