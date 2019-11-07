@@ -67,25 +67,30 @@ def log(string, color, font="slant", figlet=False):
         print(string)
 
 
-def ask_information():
+def ask_information(auto: bool = False):
     questions = [
         {
             "type": "input",
             "name": "playlist_url",
             "message": "Enter playlist url:",
             "validate": UrlValidator,
+            "default": os.getenv("PL"),
+            "when": lambda a: not auto,
         },
         {
             "type": "input",
             "name": "playlist_config_path",
             "message": "Enter playlist config path:",
             "validate": FilePathValidator,
+            "default": os.getenv("CONFIG_FILE_PATH"),
+            "when": lambda a: os.getenv("CONFIG_FILE_PATH") is None
             # "filter": lambda val: open(val).read(),
         },
         {
             "type": "confirm",
             "name": "generate",
             "message": "Do you want to generate now",
+            "when": lambda a: not auto,
         },
     ]
 

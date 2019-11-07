@@ -24,7 +24,7 @@ from pliptv.pl_filters.filters_loader import (
     load_modules_from_path,
     class_list_from_modules,
 )
-from pliptv.azure_service import upload_to_azure
+from pliptv.azure_service import upload_bytes_to_azure
 
 DEFAULT_FILTERS_PATH = os.path.join(os.path.dirname(__file__), "./pl_filters")
 DEFAULT_FILTERS_PATTERN = r".+_filter.py$"
@@ -110,7 +110,7 @@ def shorten_url(url: str, access_token: str) -> str:
 
 def save_pl(pl: M3u) -> str:
     """Save playlist file on azure and return shorten url from bit"""
-    url = upload_to_azure(f"{pl.name}.m3u", str(pl))
+    url = upload_bytes_to_azure(f"{pl.name}.m3u", str(pl))
     at = os.getenv("BITLY_ACCESS_TOKEN")
     assert at
     return shorten_url(url, at)

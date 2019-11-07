@@ -5,6 +5,7 @@
 Simple extensible m3u playlist manager cli.
 
 Many default filters was provided for:
+
 - auto matching EPG
 - auto matching logos
 - cleaning stream names
@@ -17,12 +18,13 @@ Many default filters was provided for:
 ```bash
 xpl
 ```
-    
+
 ## TODO
 
 - [x] Azure build
 - [x] [Cli dev][cli_dev]
 - [x] [Cli setup package (linux/mac)][cli_pkg] (versionning by git tag)
+- [ ] Dockerfile with env args
 - [ ] Filter: group order
 - [ ] Filter: VOD group ?
 - [ ] Enhancing reporting by filter
