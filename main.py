@@ -15,7 +15,14 @@ LOG = logging.getLogger(__name__)
 
 
 @click.command()
-def main() -> None:
+@click.option(
+    "--auto",
+    default=False,
+    type=bool,
+    is_flag=True,
+    help="Read all arguments from enviroment variables (without prompt)",
+)
+def main(auto) -> None:
     """
     Extensible CLI m3u playlist manager
     many default filters was provided for:
@@ -31,13 +38,18 @@ def main() -> None:
     log("XPL CLI", color="blue", figlet=True)
     log(main.__doc__, "green")
 
-    pl_info = ask_information()
+    pl_info = (
+        ask_information(auto)
+        if not auto
+        else {
+            "playlist_url": os.getenv("PL"),
+            "playlist_config_path": os.getenv("CONFIG_FILE_PATH"),
+        }
+    )
 
     try:
-        playlist_config = PlaylistConfig(
-            pl_info.get("playlist_config_path", os.getenv("CONFIG_FILE_PATH"))
-        )
-        pl_url = pl_info.get("playlist_url", playlist_config.url)
+        playlist_config = PlaylistConfig(pl_info.get("playlist_config_path"))
+        pl_url = pl_info.get("playlist_url")
         log(f"Downloading playlist from {pl_url}", "white")
         lines = download_file(pl_url)
         log(f"{len(lines)} retrieved for the playlist {pl_url}", "white")

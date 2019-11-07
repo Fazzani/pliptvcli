@@ -35,7 +35,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for filters_test.FiltersTests">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pliptv" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -115,9 +115,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python tests.Unittests for filters_test.FiltersTests" />
         <item itemvalue="Python tests.filters_test.py" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>

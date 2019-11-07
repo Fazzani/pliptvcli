@@ -5,7 +5,7 @@ trigger:
     - refs/tags/*
   paths:
     exclude:
-    - readme.md
+    - '*.md'
 
 variables:
   vmImage: 'ubuntu-16.04'
@@ -15,13 +15,14 @@ stages:
 - stage: prebuild
   jobs:
   - job: 'code_check'
+    displayName: 'Code check'
+    continueOnError: true
     pool:
       vmImage: $(vmImage)
     strategy:
       matrix:
         Python37:
           python.version: $(python_version)
-    continueOnError: true
 
     steps:
     - task: UsePythonVersion@0
@@ -55,6 +56,8 @@ stages:
       displayName: 'Run typecheck'
 
 - stage: test
+  dependsOn: prebuild
+  displayName: 'Tests'
   jobs:
   - job: 'tests'
     pool:
@@ -119,6 +122,3 @@ stages:
     vmImage: $(vmImage)
     environment: prod_pypi
     condition: and(succeeded('DeployPackage_test_pypi'), eq(variables['Build.SourceBranch'], 'refs/tags/'))
-
-#      TODO: Bump2version with git tags
-
