@@ -1,5 +1,11 @@
 trigger:
-- master
+  branches:
+    include:
+    - master
+    - refs/tags/*
+  paths:
+    exclude:
+    - readme.md
 
 variables:
   vmImage: 'ubuntu-16.04'
@@ -106,12 +112,13 @@ stages:
   parameters:
     vmImage: $(vmImage)
     environment: test_pypi
+    condition: succeeded('BuildPackage')
 
 - template: templates/stage-deploy.yaml
   parameters:
     vmImage: $(vmImage)
     environment: prod_pypi
-    condition: $[succeeded('DeployPackage_test_pypi')]
+    condition: and(succeeded('DeployPackage_test_pypi'), eq(variables['Build.SourceBranch'], 'refs/tags/'))
 
 #      TODO: Bump2version with git tags
 
