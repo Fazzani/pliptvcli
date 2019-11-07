@@ -46,11 +46,11 @@ remove_env:
 	conda deactivate && conda remove --name pliptv --all
 
 bv_patch:
-	bumpversion patch
+	bumpversion patch && git push origin --tags
 bv_min:
-	bumpversion minor
+	bumpversion minor && git push origin --tags
 bv_maj:
-	bumpversion major
+	bumpversion major && git push origin --tags
 
 .PHONY: mrproper
 
