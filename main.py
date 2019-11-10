@@ -5,7 +5,13 @@ import click
 
 from pliptv.cli_questions import ask_information, log
 from pliptv.config_loader import PlaylistConfig
-from pliptv.m3u_utils import download_file, load_filters, save_pl, apply_filters
+from pliptv.m3u_utils import (
+    download_file,
+    load_filters,
+    save_pl,
+    apply_filters,
+    save_pl_to_path,
+)
 from pliptv.models.streams import M3u
 from pliptv.utils.log import setup_logging
 
@@ -20,7 +26,7 @@ LOG = logging.getLogger(__name__)
     default=False,
     type=bool,
     is_flag=True,
-    help="Read all arguments from enviroment variables (without prompt)",
+    help="Read all arguments from environment variables (without prompt)",
 )
 def main(auto) -> None:
     """
@@ -66,9 +72,12 @@ def main(auto) -> None:
         )
         assert pl_filtred
 
-        log(f"Saving {m3u.name} into ", "white")
-        url = save_pl(m3u)
-        log(f"Generated playlist url for {m3u.name}: {url}", "white")
+        log(f"Saving {m3u.name}", "white")
+        file_result = save_pl_to_path(m3u, os.getenv("OUTPUT_PATH"))
+        log(f"Generated playlist for {m3u.name}: {file_result}", "white")
+
+        # url = save_pl(m3u)
+        # log(f"Generated playlist url for {m3u.name}: {url}", "white")
 
         # Display report
         # get_report(m3u)

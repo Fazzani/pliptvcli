@@ -1,0 +1,30 @@
+parameters:
+  vmImage: 'Ubuntu-16.04'
+  imageName: 'synker/xpl'
+  dockerHub: 'docker_hub'
+
+stages:
+- stage: BuildDockerImage
+  jobs:
+  - job: BuildImage
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+
+    steps:
+      - task: Docker@2
+        displayName: Build an image
+        inputs:
+          repository: ${{ parameters.imageName }}
+          command: build
+          Dockerfile: Dockerfile
+
+      - task: Docker@2
+        displayName: Push image
+        inputs:
+          containerRegistry: |
+            ${{ parameters.dockerHub }}
+          repository: ${{ parameters.imageName }}
+          command: push
+          tags: |
+            latest
+            $(Build.BuildId)

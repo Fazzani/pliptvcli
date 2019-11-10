@@ -107,6 +107,10 @@ stages:
         testResultsFiles: '$(System.DefaultWorkingDirectory)/build/reports/TEST-*.xml'
         testRunTitle: 'Publish test results for Python $(python.version)'
 
+- template: templates/stage-build-docker-image.yaml
+  parameters:
+    vmImage: $(vmImage)
+
 - template: templates/stage-build-package.yaml
   parameters:
     vmImage: $(vmImage)

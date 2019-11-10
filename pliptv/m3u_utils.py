@@ -116,5 +116,13 @@ def save_pl(pl: M3u) -> str:
     return shorten_url(url, at)
 
 
+def save_pl_to_path(pl: M3u, output_path: str) -> str:
+    """Save playlist file to output path"""
+    file_result = os.path.join(output_path, f"{pl.name}.m3u")
+    with open(file_result, "w+") as file:
+        file.write(str(pl))
+    return file_result
+
+
 def translate_channel_name(name: str) -> str:
     return name.translate(str.maketrans(dict.fromkeys(string.punctuation))).title()
