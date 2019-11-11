@@ -6,7 +6,7 @@ parameters:
 stages:
 - stage: BuildDockerImage
   jobs:
-  - job: BuildImage
+  - job: BuildAndPushImage
     pool:
       vmImage: ${{ parameters.vmImage }}
 
@@ -17,6 +17,9 @@ stages:
           repository: ${{ parameters.imageName }}
           command: build
           Dockerfile: Dockerfile
+          tags: |
+            latest
+            $(Build.BuildId)
 
       - task: Docker@2
         displayName: Push image
