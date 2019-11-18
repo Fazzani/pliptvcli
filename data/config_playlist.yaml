@@ -1,0 +1,104 @@
+---
+removeheadersfilter:
+  enabled: True
+  priority: 0
+  regex:
+    - "[\\*|-|_]{2}"
+groupingfilter:
+  priority: 21
+  map:
+    France: "\\bfr\\b|france|sfr"
+    Arab: "arab|\\bar\\b|nile"
+    Osn: "osn|pehla"
+    Tunisia: "^tunisia"
+hidegroupfilter:
+  priority: 22
+  strategy: pessimist # optimist (pessimist => remove all et showing only declared group here)
+  groups:
+    - france
+    - bein
+    - arab
+    - tunisia
+    - osn
+    - mbc
+    - sports?
+cleannamefilter:
+  priority: 19
+  regex:
+    - "(\\(.*\\))|(^.+:)|(hevc)|(h265)"
+piconfilter:
+  priority: 10
+  source_url: https://gist.githubusercontent.com/Fazzani/c07df41ebc867c8733a77a4277253dc0/raw/
+shiftfilter:
+  priority: 2
+  regex: "(.+)\\+(\\d+)"
+qualityfilter:
+  priority: 10
+  default: sd
+  regex:
+    "sd": "(.*)(\\bsd|480|360|240\\b)(.*)$"
+    "hd": "(.*)(\\bhd|720i?p?\\b)(.*)$"
+    "fhd": "(.*)(\\bfhd|1080p?i?\\b)(.*)$"
+    "4k": "(.*)(\\b4k|2160p?\\b)(.*)$"
+    "8k": "(.*)(\\b8k|4320p?\\b)(.*)$"
+displaynamefilter:
+  priority: 1
+  regex_clean_names:
+    - "^(\\|?(\\w{2,3})[:|])\\s(.*)"
+epgfilter:
+  priority: 20
+  index_url: https://raw.githubusercontent.com/Fazzani/grab/master/out/check_channels.json
+  matching_groups: 
+    - 
+      names: 
+        - "beIN VIP"
+        - "BeIN SPORTS"
+        - "beIN Media"
+      sources: 
+        - "http://www.bein.net"
+    - 
+      names: 
+        - "TUNISIA TV"
+      sources: 
+        - "http://www.watania.tn"
+    - 
+      names: 
+        - "OSN VIP"
+        - "Premium OSN"
+      sources: 
+        - "http://www.osn.com"
+    - 
+      names: 
+        - "ARAB TV"
+        - "FHD ARAB"
+        - "Kids AR"
+        - "AR News"
+        - MBC
+        - "MBC VIP"
+        - "AR HEVC"
+        - MyHD
+        - PEHLA
+        - "Islamic AR"
+        - "AR Egypt"
+      sources: 
+        - "http://www.elcinema.en.com"
+        - "http://www.elcinema.com"
+    - 
+      names: 
+        - "Chaîne Généraliste FR"
+        - "Sport FR"
+        - SFR-RMC
+        - Music
+        - "Musique FR"
+        - "Cinéma FR"
+        - "Séries & Divertissement FR"
+        - "FRANCE CH"
+        - "Découverte FR"
+        - "Jeunesse FR"
+        - "FRANCE CH (HEVC)"
+      sources: 
+        - "http://www.canalsat.fr"
+        - "http://www.telerama.fr"
+        - "http://www.tv.orange.fr"
+  matching_ratio: 0.6
+name: vipmax

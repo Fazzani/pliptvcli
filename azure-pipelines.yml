@@ -79,7 +79,7 @@ stages:
         coverage erase
         coverage run -m unittest discover -p '*_test.py'
         coverage report -m
-        coverage html
+        coverage xml
         codecov --token $CODECOV_TOKEN
       displayName: 'Test with pytest && publish code coverage'
       env:
@@ -91,7 +91,7 @@ stages:
       inputs:
         codeCoverageTool: Cobertura
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-        reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+#        reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
     - script: |
         pip install -r requirements.txt -r requirements-dev.txt
