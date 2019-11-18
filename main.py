@@ -28,7 +28,14 @@ LOG = logging.getLogger(__name__)
     is_flag=True,
     help="Read all arguments from environment variables (without prompt)",
 )
-def main(auto) -> None:
+@click.option(
+    "--export",
+    default=False,
+    type=bool,
+    is_flag=True,
+    help="Read all arguments from environment variables (without prompt)",
+)
+def main(auto, export) -> None:
     """
     Extensible CLI m3u playlist manager
     many default filters was provided for:
@@ -49,11 +56,20 @@ def main(auto) -> None:
         if not auto
         else {
             "playlist_url": os.getenv("PL"),
-            "playlist_config_path": os.getenv("CONFIG_FILE_PATH"),
+            "playlist_config_path": os.getenv("CONFIG_FILE_PATH")
+            if os.getenv("CONFIG_FILE_PATH") is not None
+            else os.path.join(
+                os.path.dirname(os.path.realpath(__file__)), "data/config_playlist.yaml"
+            ),
+            "playlist_output_path": os.getenv("OUTPUT_PATH")
+            if os.getenv("OUTPUT_PATH") is not None
+            else os.path.join(os.path.dirname(os.path.realpath(__file__)), "data"),
         }
     )
 
     try:
+        log(f"pl_info: {str(pl_info)}", "green")
+
         playlist_config = PlaylistConfig(pl_info.get("playlist_config_path"))
         pl_url = pl_info.get("playlist_url")
         log(f"Downloading playlist from {pl_url}", "white")
@@ -73,11 +89,12 @@ def main(auto) -> None:
         assert pl_filtred
 
         log(f"Saving {m3u.name}", "white")
-        file_result = save_pl_to_path(m3u, os.getenv("OUTPUT_PATH"))
+        file_result = save_pl_to_path(m3u, pl_info.get("playlist_output_path"))
         log(f"Generated playlist for {m3u.name}: {file_result}", "white")
 
-        # url = save_pl(m3u)
-        # log(f"Generated playlist url for {m3u.name}: {url}", "white")
+        if export:
+            url = save_pl(m3u)
+            log(f"Generated playlist url for {m3u.name}: {url}", "white")
 
         # Display report
         # get_report(m3u)

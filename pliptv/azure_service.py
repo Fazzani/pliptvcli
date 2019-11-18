@@ -35,6 +35,7 @@ def upload_bytes_to_azure(
 ) -> str:
     """
     Save bytes to Azure blob
+    :param connection_string:
     :param full_path_to_file:
     :param content_file_txt:
     :param container_name:
