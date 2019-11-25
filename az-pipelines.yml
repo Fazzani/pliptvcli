@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+    - feature/*
+  paths:
+    exclude:
+    - '*.md'
+
+stages:
+- stage: prebuild
+  jobs:
+    - job:
+      steps:
+      - script: |
+          echo "##vso[build.updatebuildnumber]1.0.0-alpha"
+        displayName: 'Update build number'
+
+      - script: |
+          echo "##vso[task.setvariable variable=testvar;]testvalue"
+        displayName: 'set var'
+
+      - script: |
+          echo $(testvar)
+          # Log an error or warning message in the timeline record of the current task.
+          echo "##vso[task.logissue type=warning;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]Found something that could be a problem."
+        displayName: 'Warning'
+
+      - script: |
+          echo "Begin a lengthy process..."
+          for i in {0..100..2}
+          do
+             sleep 1
+             echo $i
+             echo "##vso[task.setprogress value=$i;]Sample Progress Indicator"
+          done
+          echo "Lengthy process is complete."
+        displayName: "Test progress"
+
+      - script: |
+          echo "##vso[task.uploadsummary]$(System.DefaultWorkingDirectory)/readme.md"
+        displayName: 'UploadSummary'
+
+      - script: |
+          echo "##vso[build.addbuildtag]1.0.0-alpha"
+          echo "##vso[build.addbuildtag]1.0.0-alpha2"
+        displayName: 'Add tag build'
