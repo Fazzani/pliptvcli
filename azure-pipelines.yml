@@ -125,4 +125,4 @@ stages:
   parameters:
     vmImage: $(vmImage)
     environment: prod_pypi
-    condition: and(succeeded('DeployPackage_test_pypi'), eq(startsWith(variables['Build.SourceBranch'], 'refs/tags/', true)))
+    condition: and(succeeded('DeployPackage_test_pypi'), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
