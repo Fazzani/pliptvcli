@@ -13,7 +13,11 @@ Many default filters was provided for:
 - hide groups
 - and many others filters
 
-## Examples
+The full filter list is located [here](pliptv/pl_filters)
+
+All filters are configurable by a configuration file. An example of this file is located [here](data/config_playlist.yaml)
+
+## Examples of use
 
 ```bash
 xpl

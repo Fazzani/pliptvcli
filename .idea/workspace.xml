@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32fe434a-b955-4208-b7a2-5b6db1d37088" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/pliptv.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pliptv.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pliptv/picons_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/pliptv/picons_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +141,7 @@
       <option name="presentableId" value="Default" />
       <updated>1572302108892</updated>
       <workItem from="1589840746987" duration="19000" />
-      <workItem from="1589840902315" duration="809000" />
+      <workItem from="1589840902315" duration="2950000" />
     </task>
     <task id="LOCAL-00001" summary="FIX BUILD">
       <created>1572419845431</created>
@@ -318,5 +317,46 @@
     <MESSAGE value="update package version" />
     <MESSAGE value="add dockerfile" />
     <option name="LAST_COMMIT_MESSAGE" value="add dockerfile" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1636" height="329" key="GridCell.Tab.0.bottom" timestamp="1589843354732">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.0.bottom/0.23.1680.1027@0.23.1680.1027" timestamp="1589843354732" />
+    <state width="1636" height="329" key="GridCell.Tab.0.center" timestamp="1589843354731">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.0.center/0.23.1680.1027@0.23.1680.1027" timestamp="1589843354731" />
+    <state width="1636" height="329" key="GridCell.Tab.0.left" timestamp="1589843354730">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.0.left/0.23.1680.1027@0.23.1680.1027" timestamp="1589843354730" />
+    <state width="1636" height="329" key="GridCell.Tab.0.right" timestamp="1589843354731">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.0.right/0.23.1680.1027@0.23.1680.1027" timestamp="1589843354731" />
+    <state width="1636" height="329" key="GridCell.Tab.1.bottom" timestamp="1589843341044">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.1.bottom/0.23.1680.1027@0.23.1680.1027" timestamp="1589843341044" />
+    <state width="1636" height="329" key="GridCell.Tab.1.center" timestamp="1589843341043">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.1.center/0.23.1680.1027@0.23.1680.1027" timestamp="1589843341043" />
+    <state width="1636" height="329" key="GridCell.Tab.1.left" timestamp="1589843341043">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.1.left/0.23.1680.1027@0.23.1680.1027" timestamp="1589843341043" />
+    <state width="1636" height="329" key="GridCell.Tab.1.right" timestamp="1589843341043">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state width="1636" height="329" key="GridCell.Tab.1.right/0.23.1680.1027@0.23.1680.1027" timestamp="1589843341043" />
+    <state x="524" y="267" width="631" height="538" key="find.popup" timestamp="1589843026964">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state x="524" y="267" width="631" height="538" key="find.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1589843026964" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/pliptv$main.coverage" NAME="main Coverage Results" MODIFIED="1589843332525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

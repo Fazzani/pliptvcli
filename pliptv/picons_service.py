@@ -3,6 +3,7 @@
 """
 from __future__ import print_function
 
+import json
 import os
 from functools import lru_cache
 
@@ -24,6 +25,6 @@ def get_picons_index(gist_url: str) -> Picon:
 
     response = requests.get(gist_url)
     if response.ok:
-        data = Picon(response.json())
+        data = Picon(json.loads(response.text))
         return data
     return Picon(None)
