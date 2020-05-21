@@ -17,7 +17,7 @@ The full filter list is located [here](pliptv/pl_filters)
 
 All filters are configurable by a configuration file. An example of this file is located [here](data/config_playlist.yaml)
 
-## Examples of use
+## Examples
 
 ```bash
 docker run --rm -e "PL=$(PL)" -v "${PWD}:/data" synker/xpl:latest
