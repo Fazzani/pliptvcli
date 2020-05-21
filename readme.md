@@ -20,7 +20,7 @@ All filters are configurable by a configuration file. An example of this file is
 ## Examples of use
 
 ```bash
-xpl
+docker run --rm -e "PL=$(PL)" -v "${PWD}:/data" synker/xpl:latest
 ```
 
 ## TODO
