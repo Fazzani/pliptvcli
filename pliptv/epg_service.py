@@ -14,7 +14,8 @@ from pliptv.models.epg import Epg, epg_from_dict
 
 @lru_cache(maxsize=10000)
 def get_epg_index(epg_url: str) -> Epg:
-    assert epg_url, "url : must be not empty"
+    if not epg_url:
+        raise AssertionError("url : must be not empty")
     if not validators.url(epg_url):
         epg_url = str(os.getenv("EPG_INDEX_URL"))
         if not validators.url(epg_url):
@@ -22,7 +23,8 @@ def get_epg_index(epg_url: str) -> Epg:
 
     r = requests.get(epg_url)
     epg_string = r.json()
-    assert epg_string, "No json data"
+    if not epg_string:
+        raise AssertionError("No json data")
     return epg_from_dict(epg_string)
 
 

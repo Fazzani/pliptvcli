@@ -86,7 +86,8 @@ def main(auto, export) -> None:
         pl_filtred = list(
             map(lambda _: apply_filters(_.meta, filters, playlist_config), m3u)
         )
-        assert pl_filtred
+        if not pl_filtred:
+            raise AssertionError
 
         log(f"Saving {m3u.name}", "white")
         file_result = save_pl_to_path(m3u, pl_info.get("playlist_output_path"))

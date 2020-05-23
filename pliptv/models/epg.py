@@ -13,12 +13,14 @@ T = TypeVar("T")
 
 
 def from_str(x: Any) -> str:
-    assert isinstance(x, str)
+    if not isinstance(x, str):
+        raise AssertionError
     return x
 
 
 def from_none(x: Any) -> Any:
-    assert x is None
+    if x is not None:
+        raise AssertionError
     return x
 
 
@@ -28,16 +30,19 @@ def from_union(fs, x):
             return f(x)
         except Exception:
             pass
-    assert False
+    if not False:
+        raise AssertionError
 
 
 def to_class(c: Type[T], x: Any) -> dict:
-    assert isinstance(x, c)
+    if not isinstance(x, c):
+        raise AssertionError
     return cast(Any, x).to_dict()
 
 
 def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
-    assert isinstance(x, list)
+    if not isinstance(x, list):
+        raise AssertionError
     return [f(y) for y in x]
 
 
@@ -59,7 +64,8 @@ class DisplayName:
 
     @staticmethod
     def from_dict(obj: Any) -> "DisplayName":
-        assert isinstance(obj, dict)
+        if not isinstance(obj, dict):
+            raise AssertionError
         lang = from_str(obj.get("lang"))
         t = from_str(obj.get("$t"))
         return DisplayName(lang, t)
@@ -75,7 +81,8 @@ class Icon:
 
     @staticmethod
     def from_dict(obj: Any) -> "Icon":
-        assert isinstance(obj, dict)
+        if not isinstance(obj, dict):
+            raise AssertionError
         src = from_str(obj.get("src"))
         return Icon(src)
 
@@ -95,7 +102,8 @@ class Channel:
 
     @staticmethod
     def from_dict(obj: Any) -> "Channel":
-        assert isinstance(obj, dict)
+        if not isinstance(obj, dict):
+            raise AssertionError
         id = from_str(obj.get("id"))
         country = from_str(obj.get("country"))
         display_name = DisplayName.from_dict(obj.get("display-name"))
@@ -124,7 +132,8 @@ class Tv:
 
     @staticmethod
     def from_dict(obj: Any) -> "Tv":
-        assert isinstance(obj, dict)
+        if not isinstance(obj, dict):
+            raise AssertionError
         generator_info_name = from_str(obj.get("generator-info-name"))
         generator_info_url = from_str(obj.get("generator-info-url"))
         channel = from_list(Channel.from_dict, obj.get("channel"))
@@ -145,7 +154,8 @@ class Epg:
 
     @staticmethod
     def from_dict(obj: Any) -> "Epg":
-        assert isinstance(obj, dict)
+        if not isinstance(obj, dict):
+            raise AssertionError
         tv = Tv.from_dict(obj.get("tv"))
         return Epg(tv)
 
