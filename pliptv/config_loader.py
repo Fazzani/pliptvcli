@@ -2,7 +2,6 @@
 Load playlist config from yaml file
 """
 import logging
-import os
 
 import yaml
 
