@@ -133,7 +133,8 @@ class M3u:
 
     @staticmethod
     def _meta_from_header_line(m3u_header_line: str) -> StreamMeta:
-        assert m3u_header_line
+        if not m3u_header_line:
+            raise AssertionError
         meta_raw_array = m3u_header_line.split(",")
         meta = StreamMeta(meta_raw_array[1], Tvg())
 
@@ -163,7 +164,8 @@ class M3u:
         Returns:
             M3u -- M3u object
         """
-        assert pl
+        if not pl:
+            raise AssertionError
         streams = []
         for item in pl:
             streams.append(Stream(item[1], M3u._meta_from_header_line(item[0])))

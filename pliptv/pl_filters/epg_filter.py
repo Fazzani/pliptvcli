@@ -31,7 +31,8 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
             Stream meta data
         """
         epg: Epg = get_epg_index(self.filter_config.index_url)
-        assert epg
+        if not epg:
+            raise AssertionError
 
         ratio: float = 0.0
         channel_epg: Optional[Channel] = None

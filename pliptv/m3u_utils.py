@@ -39,13 +39,17 @@ def download_file(pl_url: str) -> List[Tuple[str, str]]:
     Returns:
         dict --  m3u transformed to dict
     """
-    assert pl_url
+    if not pl_url:
+        raise AssertionError
     res_parse_url = urlparse(pl_url)
-    assert res_parse_url.scheme
-    assert res_parse_url.netloc
+    if not res_parse_url.scheme:
+        raise AssertionError
+    if not res_parse_url.netloc:
+        raise AssertionError
     r = requests.get(pl_url)
     lines = StringIO(r.content.decode("utf-8")).readlines()
-    assert lines
+    if not lines:
+        raise AssertionError
 
     keys = [lines[i].rstrip() for i in range(1, len(lines), 2)]
     values = [lines[i].rstrip() for i in range(2, len(lines), 2)]
@@ -78,7 +82,8 @@ def get_filter_pool(
             and not inspect.isabstract(x)
             and x.__name__.endswith("Filter"),
         )
-        assert class_list
+        if not class_list:
+            raise AssertionError
         cls = load_class_from_name(f"{c[0]}.{class_list[0]}")
 
         filter_pool.append(cls(config))
@@ -103,8 +108,10 @@ def load_filters(
 
 
 def shorten_url(url: str, access_token: str) -> str:
-    assert url
-    assert access_token
+    if not url:
+        raise AssertionError
+    if not access_token:
+        raise AssertionError
     return Shortener("Bitly", bitly_token=access_token).short(url)
 
 
@@ -112,7 +119,8 @@ def save_pl(pl: M3u) -> str:
     """Save playlist file on azure and return shorten url from bit"""
     url = upload_bytes_to_azure(f"{pl.name}.m3u", str(pl))
     at = os.getenv("BITLY_ACCESS_TOKEN")
-    assert at
+    if not at:
+        raise AssertionError
     return shorten_url(url, at)
 
 
