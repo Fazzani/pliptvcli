@@ -1,7 +1,7 @@
 xcodestream==0.0.8
 nltk==3.5
 pandas==0.25.3
-azure-storage-blob==12.3.2
+azure-storage-blob==12.4.0
 apache-airflow==1.10.11
 requests==2.24.0
 pyshorteners==1.0.1
