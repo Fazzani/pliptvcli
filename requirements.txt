@@ -14,5 +14,5 @@ PyFiglet==0.8.post1
 Clint==0.5.1
 PyInquirer==1.0.3
 termcolor==1.1.0
-coloredlogs==14.0
+coloredlogs==14.2
 validators==0.18.1
