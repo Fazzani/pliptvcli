@@ -7,7 +7,7 @@ requests==2.25.0
 pyshorteners==1.0.1
 Munch==2.5.0
 pyyaml==5.4.1
-memoization==0.3.1
+memoization==0.4.0
 Click==7.1.2
 docopt==0.6.2
 PyFiglet==0.8.post1
