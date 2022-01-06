@@ -3,7 +3,7 @@ nltk==3.5
 pandas==0.25.3
 azure-storage-blob==12.7.1
 apache-airflow==1.10.14
-requests==2.25.0
+requests==2.27.1
 pyshorteners==1.0.1
 Munch==2.5.0
 pyyaml==5.4.1
