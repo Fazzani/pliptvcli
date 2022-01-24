@@ -1,6 +1,6 @@
 xcodestream==0.0.8
 nltk==3.5
-pandas==0.25.3
+pandas==1.4.0
 azure-storage-blob==12.7.1
 apache-airflow==1.10.14
 requests==2.25.0
