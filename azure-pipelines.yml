@@ -8,8 +8,8 @@ trigger:
     - '*.md'
 
 variables:
-  vmImage: 'ubuntu-16.04'
-  python_version: '3.7'
+  vmImage: 'ubuntu-20.04'
+  python_version: '3.9'
 
 stages:
 - stage: prebuild
@@ -65,7 +65,7 @@ stages:
     strategy:
       matrix:
         Python37:
-          python.version: '3.7'
+          python.version: '3.9'
     displayName: Tests
 
     steps:

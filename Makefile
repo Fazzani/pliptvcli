@@ -44,7 +44,7 @@ clean_py_cache:
 	@find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
 create_env:
-	@conda create --name pliptv python=3.7
+	@conda create --name pliptv python=3.9
 
 remove_env:
 	@conda deactivate && conda remove --name pliptv --all
@@ -69,7 +69,7 @@ docker_b:
 docker_r:
 	@docker run --rm --env-file ./.envd -v "$(PWD)/data:/data" synker/xpl:latest --export --auto
 run:
-	PL=$(PL) python main.py --auto
+	dotenv python main.py --auto --export
 mrproper:
 	@rm -rf build
 	@rm -rf .coverage

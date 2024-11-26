@@ -1,6 +1,7 @@
 """
 Load playlist config from yaml file
 """
+
 import logging
 
 import yaml
@@ -26,7 +27,7 @@ class DictToObject(object):
 
 class PlaylistConfig:
     def __init__(self, config_path: str):
-        with open(config_path, "r") as stream:
+        with open(config_path, "r", encoding="utf8") as stream:
             try:
                 LOG.info(f"Loading playlist config from file path: {config_path}")
                 self.__dict__.update(DictToObject(yaml.safe_load(stream)).__dict__)
