@@ -1,6 +1,6 @@
 xcodestream==0.0.8
 azure-storage-blob~=12.24.0
-requests~=2.32.0
+requests~=2.32.3
 pyshorteners==1.0.1
 Munch~=4.0.0
 pyyaml~=6.0.2
