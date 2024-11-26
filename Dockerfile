@@ -1,4 +1,4 @@
-FROM python:3.7-stretch
+FROM python:3-slim
 LABEL maintainer="synker-team@synker.ovh" \
       description="Extensible playlist cli" \
       multi.name="xpl"

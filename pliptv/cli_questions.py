@@ -1,10 +1,9 @@
 import os
 
 import validators
+from pyfiglet import figlet_format
 from PyInquirer import Token, ValidationError, Validator, prompt, style_from_dict
 from termcolor import colored
-
-from pyfiglet import figlet_format
 
 try:
     import colorama
@@ -67,7 +66,7 @@ def log(string, color, font="slant", figlet=False):
         print(string)
 
 
-def ask_information(auto: bool = False):
+def ask_information(auto: bool = False) -> None:
     questions = [
         {
             "type": "input",
@@ -83,7 +82,7 @@ def ask_information(auto: bool = False):
             "message": "Enter playlist config path:",
             "validate": FilePathValidator,
             "default": os.getenv("CONFIG_FILE_PATH"),
-            "when": lambda a: os.getenv("CONFIG_FILE_PATH") is None
+            "when": lambda a: os.getenv("CONFIG_FILE_PATH") is None,
             # "filter": lambda val: open(val).read(),
         },
         {

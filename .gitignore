@@ -113,3 +113,4 @@ test-reports/
 *.log.*
 
 .idea/
+log/

@@ -2,14 +2,14 @@ trigger:
   branches:
     include:
     - master
-    - refs/tags/*
+    - refs/tags/v*
   paths:
     exclude:
     - '*.md'
 
 variables:
-  vmImage: 'ubuntu-16.04'
-  python_version: '3.7'
+  vmImage: 'ubuntu-20.04'
+  python_version: '3.9'
 
 stages:
 - stage: prebuild
@@ -21,7 +21,7 @@ stages:
       vmImage: $(vmImage)
     strategy:
       matrix:
-        Python37:
+        Python39:
           python.version: $(python_version)
 
     steps:
@@ -43,7 +43,7 @@ stages:
       vmImage: $(vmImage)
     strategy:
       matrix:
-        Python37:
+        Python39:
           python.version: $(python_version)
     continueOnError: true
     steps:
@@ -51,7 +51,7 @@ stages:
       inputs:
         versionSpec: '$(python.version)'
     - script: |
-        python -m pip install mypy
+        pip install -r requirements-dev.txt
         make typecheck
       displayName: 'Run typecheck'
 
@@ -64,8 +64,8 @@ stages:
       vmImage: $(vmImage)
     strategy:
       matrix:
-        Python37:
-          python.version: '3.7'
+        Python39:
+          python.version: '3.9'
     displayName: Tests
 
     steps:
@@ -87,11 +87,9 @@ stages:
         PL: $(PL)
         EPG_INDEX_URL: $(EPG_INDEX_URL)
 
-    - task: PublishCodeCoverageResults@1
+    - task: PublishCodeCoverageResults@2
       inputs:
-        codeCoverageTool: Cobertura
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-#        reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
     - script: |
         pip install -r requirements.txt -r requirements-dev.txt

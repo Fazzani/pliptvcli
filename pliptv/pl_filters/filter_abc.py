@@ -1,9 +1,21 @@
-from abc import ABC, abstractmethod, ABCMeta
+from abc import ABC, ABCMeta, abstractmethod
+from enum import Enum
 from functools import lru_cache
+from typing import Any
 
 from pliptv.config_loader import PlaylistConfig
-from pliptv.models.streams import StreamMeta
+from pliptv.models.streams import Stream
 from pliptv.utils.log.logging_meta import MetaLoggingBase
+
+
+class ActionEnum(Enum):
+    NONE = 0
+    PRESERVE = 1
+    REMOVE = 2
+
+    @classmethod
+    def _missing_(cls, value):
+        return cls.NONE
 
 
 class FilterABC(ABC):
@@ -15,7 +27,7 @@ class FilterABC(ABC):
 
     @abstractmethod
     @lru_cache(maxsize=32)
-    def apply(self, value: StreamMeta) -> StreamMeta:
+    def apply(self, value: Stream) -> Stream:
         return value
 
     @property
@@ -29,16 +41,20 @@ class FilterABC(ABC):
         self._filter_config_name = value
 
     @property
-    def filter_config(self):
+    def filter_config(self) -> Any:
         return self.config.__dict__.get(self.filter_config_name)
 
     @property
-    def priority(self):
+    def priority(self) -> int:
         return self.filter_config.priority
 
     @property
     def enabled(self):
         return self.filter_config.__dict__.get("enabled", True)
+
+    @property
+    def action(self) -> ActionEnum:
+        return ActionEnum(self.filter_config.__dict__.get("action", 0))
 
 
 class LoggingFilterAbcMixin(MetaLoggingBase, ABCMeta):

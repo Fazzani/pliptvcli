@@ -1,19 +1,22 @@
 import logging
 import os
+from typing import Any
 
 import click
 
 from pliptv.cli_questions import ask_information, log
 from pliptv.config_loader import PlaylistConfig
 from pliptv.m3u_utils import (
+    apply_filters,
     download_file,
+    get_lines,
     load_filters,
     save_pl,
-    apply_filters,
     save_pl_to_path,
 )
 from pliptv.models.streams import M3u
 from pliptv.utils.log import setup_logging
+from pliptv.utils.tools import uri_validator
 
 setup_logging()
 
@@ -33,7 +36,7 @@ LOG = logging.getLogger(__name__)
     default=False,
     type=bool,
     is_flag=True,
-    help="Read all arguments from environment variables (without prompt)",
+    help="Export playlist into a file",
 )
 def main(auto, export) -> None:
     """
@@ -51,7 +54,7 @@ def main(auto, export) -> None:
     log("XPL CLI", color="blue", figlet=True)
     log(main.__doc__, "green")
 
-    pl_info = (
+    pl_info: dict[str, Any] = (  # type: ignore
         ask_information(auto)
         if not auto
         else {
@@ -68,29 +71,36 @@ def main(auto, export) -> None:
     )
 
     try:
+        if pl_info is None:
+            raise Exception("pl_info is required")
         log(f"pl_info: {str(pl_info)}", "green")
 
-        playlist_config = PlaylistConfig(pl_info.get("playlist_config_path"))
-        pl_url = pl_info.get("playlist_url")
-        log(f"Downloading playlist from {pl_url}", "white")
-        lines = download_file(pl_url)
+        playlist_config = PlaylistConfig(str(pl_info.get("playlist_config_path")))
+        pl_url: str = str(pl_info.get("playlist_url"))
+        if uri_validator(pl_url):
+            log(f"Downloading playlist from {pl_url}", "white")
+            lines = download_file(pl_url)
+        else:
+            with open(pl_url, "r", encoding="utf8") as f:
+                lines = get_lines(f.readlines())
         log(f"{len(lines)} retrieved for the playlist {pl_url}", "white")
 
         m3u = M3u.from_list("playlist", lines)
 
-        log(f"Loading filters", "white")
+        log("Loading filters", "white")
         filters = load_filters()
         log(f"{len(filters)} loaded..", "white")
 
         log(f"Applying filters on {m3u.name}", "white")
-        pl_filtred = list(
-            map(lambda _: apply_filters(_.meta, filters, playlist_config), m3u)
+        pl_filtered = list(
+            map(lambda stream: apply_filters(stream, filters, playlist_config), m3u)
         )
-        if not pl_filtred:
+        if not pl_filtered:
+            log(f"No data: {pl_filtered}", "red")
             raise AssertionError
 
         log(f"Saving {m3u.name}", "white")
-        file_result = save_pl_to_path(m3u, pl_info.get("playlist_output_path"))
+        file_result = save_pl_to_path(m3u, str(pl_info.get("playlist_output_path")))
         log(f"Generated playlist for {m3u.name}: {file_result}", "white")
 
         if export:

@@ -1,14 +1,15 @@
 import os
 import unittest
+
 import xmlrunner
 
 from pliptv.config_loader import PlaylistConfig
-from pliptv.models.streams import StreamMeta
+from pliptv.models.streams import Stream, StreamMeta
 from pliptv.pl_filters.display_name_filter import DisplayNameFilter
 from pliptv.pl_filters.filter_abc import FilterABC
 from pliptv.pl_filters.filters_loader import (
-    load_class_from_name,
     class_list_from_modules,
+    load_class_from_name,
     load_modules_from_path,
 )
 from pliptv.pl_filters.quality_filter import QualityFilter
@@ -28,53 +29,54 @@ class FiltersTests(unittest.TestCase):
         pl_filter = ShiftFilter(self.playlist_config)
 
         test_suite = [
-            (StreamMeta("fr: name1 +1"), "1", "fr: name1"),
-            (StreamMeta("|usa| name2"), "", "|usa| name2"),
-            (StreamMeta("ar| test 12 +4 1080"), "4", "ar| test 12"),
-            (StreamMeta("test 123 HD +8"), "8", "test 123 HD"),
+            (Stream("", StreamMeta("fr: name1 +1")), "1", "fr: name1"),
+            (Stream("", StreamMeta("|usa| name2")), "", "|usa| name2"),
+            (Stream("", StreamMeta("ar| test 12 +4 1080")), "4", "ar| test 12"),
+            (Stream("", StreamMeta("test 123 HD +8")), "8", "test 123 HD"),
         ]
 
         for val in test_suite:
             with self.subTest(val=val):
                 res = pl_filter.apply(val[0])
-                self.assertTrue(res.display_name == val[2])
-                self.assertTrue(res.tvg.tvg_shift == val[1])
+                self.assertTrue(res.meta.display_name == val[2])
+                self.assertTrue(res.meta.tvg.tvg_shift == val[1])
 
     def test_clean_name_filter_ok(self):
         pl_filter = DisplayNameFilter(self.playlist_config)
 
         test_suite = [
-            (StreamMeta("fr: name1"), "fr", "name1"),
-            (StreamMeta("|usa| name2"), "usa", "name2"),
-            (StreamMeta("ar| test 12"), "ar", "test 12"),
-            (StreamMeta("test 123 HD"), "", "test 123 HD"),
+            (Stream("", StreamMeta("fr: name1")), "fr", "name1"),
+            (Stream("", StreamMeta("|usa| name2")), "usa", "name2"),
+            (Stream("", StreamMeta("ar| test 12")), "ar", "test 12"),
+            (Stream("", StreamMeta("test 123 HD")), "", "test 123 HD"),
         ]
 
         for val in test_suite:
             with self.subTest(val=val):
                 res = pl_filter.apply(val[0])
-                self.assertTrue(res.display_name == val[2])
-                self.assertTrue(res[StreamMeta.CULTURE_KEY] == val[1])
+                self.assertTrue(res.meta.display_name == val[2])
+                self.assertTrue(res.meta[StreamMeta.CULTURE_KEY] == val[1])
 
     def test_quality_filter_ok(self):
         pl_filter = QualityFilter(self.playlist_config)
 
         test_suite = [
-            (StreamMeta("name1 1080p"), "fhd", "name1"),
-            (StreamMeta("fr: name1 4k"), "4k", "fr: name1"),
-            (StreamMeta("ar| test 12 hd1"), "hd", "ar| test 12 1"),
-            (StreamMeta("test 123"), "sd", "test 123"),
+            (Stream("", StreamMeta("name1 1080p")), "fhd", "name1"),
+            (Stream("", StreamMeta("fr: name1 4k")), "4k", "fr: name1"),
+            (Stream("", StreamMeta("ar| test 12 hd1")), "hd", "ar| test 12 1"),
+            (Stream("", StreamMeta("test 123")), "sd", "test 123"),
         ]
 
         for val in test_suite:
             with self.subTest(val=val):
                 res = pl_filter.apply(val[0])
                 self.assertTrue(
-                    val[0].display_name == val[2], f"{res.display_name} isn't {val[2]}"
+                    val[0].meta.display_name == val[2],
+                    f"{res.meta.display_name} isn't {val[2]}",
                 )
                 self.assertTrue(
-                    val[0][StreamMeta.QUALITY_KEY] == val[1],
-                    f"{res[StreamMeta.QUALITY_KEY]} isn't {val[1]}",
+                    val[0].meta[StreamMeta.QUALITY_KEY] == val[1],
+                    f"{res.meta[StreamMeta.QUALITY_KEY]} isn't {val[1]}",
                 )
 
     def test_filter_loader(self):

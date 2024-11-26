@@ -4,27 +4,28 @@ steps:
 - filters to clean name, add epg, add picons, add others meta data
 - push pl to public url
 """
+
 import inspect
 import logging
 import os
 import string
 from io import StringIO
-from typing import List, Tuple, Any
+from typing import Any, List, Tuple
 from urllib.parse import urlparse
 
 import requests
 from memoization import cached
 from pyshorteners import Shortener
 
+from pliptv.azure_service import upload_bytes_to_azure
 from pliptv.config_loader import PlaylistConfig
-from pliptv.models.streams import M3u, StreamMeta
+from pliptv.models.streams import M3u, Stream
 from pliptv.pl_filters.filter_abc import FilterABC
 from pliptv.pl_filters.filters_loader import (
+    class_list_from_modules,
     load_class_from_name,
     load_modules_from_path,
-    class_list_from_modules,
 )
-from pliptv.azure_service import upload_bytes_to_azure
 
 DEFAULT_FILTERS_PATH = os.path.join(os.path.dirname(__file__), "./pl_filters")
 DEFAULT_FILTERS_PATTERN = r".+_filter.py$"
@@ -33,9 +34,9 @@ LOG = logging.getLogger(__name__)
 
 def download_file(pl_url: str) -> List[Tuple[str, str]]:
     """
-    download a m3u file and transfort it to dict
+    download a m3u file and transform it to dict
     Arguments:
-        pl_url {str} -- playlit url
+        pl_url {str} -- playlist url
     Returns:
         dict --  m3u transformed to dict
     """
@@ -50,6 +51,20 @@ def download_file(pl_url: str) -> List[Tuple[str, str]]:
     lines = StringIO(r.content.decode("utf-8")).readlines()
     if not lines:
         raise AssertionError
+    return get_lines(lines)
+
+
+def get_lines(lines: list[str]) -> List[Tuple[str, str]]:
+    """
+    Get a media lines
+    Arguments:
+        lines {list[str]} -- playlist lines
+    Returns:
+        dict --  m3u transformed to dict
+    """
+
+    if not lines:
+        raise AssertionError
 
     keys = [lines[i].rstrip() for i in range(1, len(lines), 2)]
     values = [lines[i].rstrip() for i in range(2, len(lines), 2)]
@@ -57,15 +72,19 @@ def download_file(pl_url: str) -> List[Tuple[str, str]]:
 
 
 def apply_filters(
-    stream: StreamMeta, filters: List[Tuple[str, str]], config: Any
-) -> StreamMeta:
-    """Apply enabled filters ordered by priority on item"""
+    stream: Stream, filters: List[Tuple[str, str]], config: Any
+) -> Stream:
+    """Apply enabled filters ordered by priority"""
     filter_pool = get_filter_pool(filters, config)
 
     for filter_instance in filter(
         lambda x: x.enabled, sorted(filter_pool, key=lambda x: x.priority)
     ):
-        filter_instance.apply(stream)
+        if not stream.meta.hidden:
+            filter_instance.apply(stream)
+        LOG.info(
+            f"after applying {filter_instance.__class__.__name__} hidden: {stream.meta.hidden} {str(stream)}"
+        )
     return stream
 
 
@@ -73,7 +92,7 @@ def apply_filters(
 def get_filter_pool(
     filters: List[Tuple[str, str]], config: PlaylistConfig
 ) -> List[FilterABC]:
-    """Build pool filters """
+    """Build pool filters"""
     filter_pool: List[FilterABC] = []
     for c in filters:
         class_list = class_list_from_modules(
@@ -112,7 +131,7 @@ def shorten_url(url: str, access_token: str) -> str:
         raise AssertionError
     if not access_token:
         raise AssertionError
-    return Shortener("Bitly", bitly_token=access_token).short(url)
+    return Shortener(api_key=access_token).bitly.short(url)
 
 
 def save_pl(pl: M3u) -> str:
@@ -127,7 +146,7 @@ def save_pl(pl: M3u) -> str:
 def save_pl_to_path(pl: M3u, output_path: str) -> str:
     """Save playlist file to output path"""
     file_result = os.path.join(output_path, f"{pl.name}.m3u")
-    with open(file_result, "w+") as file:
+    with open(file_result, "w+", encoding="utf-8") as file:
         file.write(str(pl))
     return file_result
 

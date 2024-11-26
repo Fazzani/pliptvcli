@@ -1,13 +1,13 @@
 from difflib import SequenceMatcher
-from functools import reduce, lru_cache
-from typing import Optional, Any, List
+from functools import lru_cache, reduce
+from typing import Any, List, Optional
 
 from pliptv.config_loader import PlaylistConfig
 from pliptv.epg_service import get_epg_index
 from pliptv.m3u_utils import translate_channel_name
-from pliptv.models.epg import Epg, Channel
-from pliptv.models.streams import StreamMeta
-from pliptv.pl_filters.filter_abc import LoggingFilterAbcMixin, FilterABC
+from pliptv.models.epg import Channel, Epg
+from pliptv.models.streams import Stream
+from pliptv.pl_filters.filter_abc import FilterABC, LoggingFilterAbcMixin
 from pliptv.utils.log.decorators import func_logger
 
 
@@ -21,7 +21,7 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
 
     @lru_cache(maxsize=32)
     @func_logger(enabled=True)
-    def apply(self, value: StreamMeta) -> StreamMeta:
+    def apply(self, value: Stream) -> Stream:
         """Apply display epg filter
 
         Arguments:
@@ -39,7 +39,7 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
 
         epg_sources = list(
             filter(
-                lambda e: value.tvg.group_title in e["names"],
+                lambda e: value.meta.tvg.group_title in e["names"],
                 self.filter_config.matching_groups,
             )
         )
@@ -51,7 +51,7 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
             for c in filter(lambda e: e.url in epg_urls, epg.tv.channel):
                 r = SequenceMatcher(
                     None,
-                    translate_channel_name(f"{value.display_name}"),
+                    translate_channel_name(f"{value.meta.display_name}"),
                     translate_channel_name(f"{c.display_name.name}"),
                 ).ratio()
                 if r > ratio:
@@ -59,18 +59,17 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
                     channel_epg = c
 
         if channel_epg and ratio > self.filter_config.matching_ratio:
-
-            value.tvg.tvg_id = channel_epg.id
-            value.tvg.tvg_name = channel_epg.id
-            value.tvg.tvg_logo = (
+            value.meta.tvg.tvg_id = channel_epg.id
+            value.meta.tvg.tvg_name = channel_epg.id
+            value.meta.tvg.tvg_logo = (
                 channel_epg.icon.src
-                if channel_epg.icon and value.tvg.tvg_logo
-                else value.tvg.tvg_logo
+                if channel_epg.icon and value.meta.tvg.tvg_logo
+                else value.meta.tvg.tvg_logo
             )
             # Filter report
-            value.tvg[f"__{__name__}__dn_b"] = value.display_name
-            value.tvg[f"__{__name__}__dn_a"] = channel_epg.id
-            value.tvg[f"__{__name__}__matched"] = "True"
-            value.tvg[f"__{__name__}__matched_source"] = channel_epg.url
+            value.meta.tvg[f"__{__name__}__dn_b"] = value.meta.display_name
+            value.meta.tvg[f"__{__name__}__dn_a"] = channel_epg.id
+            value.meta.tvg[f"__{__name__}__matched"] = "True"
+            value.meta.tvg[f"__{__name__}__matched_source"] = channel_epg.url
 
         return value

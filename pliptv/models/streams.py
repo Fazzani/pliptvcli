@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Tuple, List, Any
+from typing import Any, List, Tuple
 
 """
 #EXTM3U
@@ -49,7 +49,7 @@ class StreamMeta:
     CULTURE_KEY: str = "culture"
     HIDDEN_KEY: str = "hidden"
 
-    def __init__(self, display_name: str, tvg: Tvg = None):
+    def __init__(self, display_name: str, tvg: Tvg | None = None):
         self.tvg = tvg if tvg else Tvg()
         self.display_name = display_name
 
@@ -88,7 +88,7 @@ class StreamMeta:
 
 
 class Stream:
-    def __init__(self, url: str, meta: StreamMeta = None):
+    def __init__(self, url: str, meta: StreamMeta):
         self.url = url
         self.meta = meta
 
@@ -101,7 +101,7 @@ class M3u:
     LINE_HEADER_VALUE_REGEX = r'(?:{}=")(.*?)(?=")'
     HEADER_ATTRS = ["tvg-id", "tvg-name", "tvg-logo", "tvg-shift", "group-title"]
 
-    def __init__(self, name: str, streams: List[Stream] = None):
+    def __init__(self, name: str, streams: List[Stream]):
         self.name = name
         self.streams = streams
         self.index = 0
@@ -110,9 +110,9 @@ class M3u:
         return self
 
     def __next__(self):
-        if self.index < len(self.streams) - 1:
+        if self.index < len(self.streams):
             self.index += 1
-            return self.streams[self.index]
+            return self.streams[self.index - 1]
         else:
             self.index = 0
             raise StopIteration()
@@ -124,9 +124,7 @@ class M3u:
             + CAR_RETURN.join(
                 [
                     str(stream)
-                    for stream in filter(
-                        lambda x: x.meta.hidden == "False", self.streams
-                    )
+                    for stream in filter(lambda x: not x.meta.hidden, self.streams)
                 ]
             )
         )
@@ -168,6 +166,7 @@ class M3u:
             raise AssertionError
         streams = []
         for item in pl:
+            print(f"{str(item)}")
             streams.append(Stream(item[1], M3u._meta_from_header_line(item[0])))
 
         return cls(name, streams)
