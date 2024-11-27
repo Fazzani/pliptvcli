@@ -1,14 +1,17 @@
 import logging
+import multiprocessing
 import os
 from typing import Any
 
 import click
+from tqdm import tqdm
 
 from pliptv.cli_questions import ask_information, log
 from pliptv.config_loader import PlaylistConfig
 from pliptv.m3u_utils import (
     apply_filters,
     download_file,
+    get_filter_pool,
     get_lines,
     load_filters,
     save_pl,
@@ -38,7 +41,14 @@ LOG = logging.getLogger(__name__)
     is_flag=True,
     help="Export playlist into a file",
 )
-def main(auto, export) -> None:
+@click.option(
+    "--vod",
+    default=False,
+    type=bool,
+    is_flag=True,
+    help="Generate VOD 'strm' file",
+)
+def main(auto: bool, export: bool, vod: bool) -> None:
     """
     Extensible CLI m3u playlist manager
     many default filters was provided for:
@@ -59,6 +69,7 @@ def main(auto, export) -> None:
         if not auto
         else {
             "playlist_url": os.getenv("PL"),
+            "strm_output_path": os.getenv("STRM_OUTPUT_PATH"),
             "playlist_config_path": os.getenv("CONFIG_FILE_PATH")
             if os.getenv("CONFIG_FILE_PATH") is not None
             else os.path.join(
@@ -91,21 +102,41 @@ def main(auto, export) -> None:
         filters = load_filters()
         log(f"{len(filters)} loaded..", "white")
 
-        log(f"Applying filters on {m3u.name}", "white")
-        pl_filtered = list(
-            map(lambda stream: apply_filters(stream, filters, playlist_config), m3u)
-        )
-        if not pl_filtered:
-            log(f"No data: {pl_filtered}", "red")
-            raise AssertionError
+        log(f"Applying filters on {m3u.name.capitalize()}", "white")
+        filter_pool = get_filter_pool(filters, playlist_config)
 
-        log(f"Saving {m3u.name}", "white")
+        with multiprocessing.Pool(4) as pool:
+            multiple_results = [
+                pool.apply_async(apply_filters, args=(stream, filter_pool))
+                for stream in m3u
+            ]
+            m3u = M3u(m3u.name, [res.get() for res in tqdm(multiple_results)])
+
+        log(f"Saving {m3u.name.capitalize()}", "white")
         file_result = save_pl_to_path(m3u, str(pl_info.get("playlist_output_path")))
-        log(f"Generated playlist for {m3u.name}: {file_result}", "white")
+        log(f"Generated playlist for {m3u.name.capitalize()}: {file_result}", "white")
 
         if export:
             url = save_pl(m3u)
-            log(f"Generated playlist url for {m3u.name}: {url}", "white")
+            log(f"Generated playlist url for {m3u.name.capitalize()}: {url}", "white")
+
+        strm_output_path = str(pl_info.get("strm_output_path"))
+        if vod and strm_output_path is not None:
+            log(
+                f"Generating VOD strm files url for {m3u.name.capitalize()} into {strm_output_path}",
+                "green",
+            )
+            for stream in tqdm(filter(lambda x: x.meta.isVod, m3u.streams)):
+                strm_output_fullpath: str = os.path.join(
+                    strm_output_path, stream.meta.display_name + ".strm"
+                )
+                with open(strm_output_fullpath, "w") as f:
+                    f.write(stream.url)
+
+            log(
+                f"Generated VOD strm files for playlist: {m3u.name.capitalize()} into {strm_output_path}",
+                "green",
+            )
 
         # Display report
         # get_report(m3u)

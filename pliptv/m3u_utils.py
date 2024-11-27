@@ -10,7 +10,7 @@ import logging
 import os
 import string
 from io import StringIO
-from typing import Any, List, Tuple
+from typing import List, Tuple
 from urllib.parse import urlparse
 
 import requests
@@ -71,19 +71,14 @@ def get_lines(lines: list[str]) -> List[Tuple[str, str]]:
     return list(zip(keys, values))
 
 
-def apply_filters(
-    stream: Stream, filters: List[Tuple[str, str]], config: Any
-) -> Stream:
+def apply_filters(stream: Stream, filter_pool: List[FilterABC]) -> Stream:
     """Apply enabled filters ordered by priority"""
-    filter_pool = get_filter_pool(filters, config)
-
     for filter_instance in filter(
         lambda x: x.enabled, sorted(filter_pool, key=lambda x: x.priority)
     ):
-        if not stream.meta.hidden:
-            filter_instance.apply(stream)
-        LOG.info(
-            f"after applying {filter_instance.__class__.__name__} hidden: {stream.meta.hidden} {str(stream)}"
+        filter_instance.apply(stream)
+        LOG.debug(
+            f"after applying {filter_instance.__class__.__name__} hidden: {stream.meta.hidden} culture: {str(stream.meta.culture)} {str(stream)}"
         )
     return stream
 

@@ -69,7 +69,7 @@ docker_b:
 docker_r:
 	@docker run --rm --env-file ./.envd -v "$(PWD)/data:/data" synker/xpl:latest --export --auto
 run:
-	dotenv python main.py --auto --export
+	dotenv python main.py --auto --export --vod
 mrproper:
 	@rm -rf build
 	@rm -rf .coverage

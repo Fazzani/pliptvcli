@@ -86,6 +86,15 @@ def ask_information(auto: bool = False) -> None:
             # "filter": lambda val: open(val).read(),
         },
         {
+            "type": "input",
+            "name": "strm_output_path",
+            "message": "Enter strm output path:",
+            "validate": FilePathValidator,
+            "default": os.getenv("STRM_OUTPUT_PATH"),
+            "when": lambda a: os.getenv("STRM_OUTPUT_PATH") is None,
+            # "filter": lambda val: open(val).read(),
+        },
+        {
             "type": "confirm",
             "name": "generate",
             "message": "Do you want to generate now",
