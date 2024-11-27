@@ -1,16 +1,20 @@
 ---
 removeheadersfilter:
-  enabled: True
   priority: 0
   regex:
     - "^[\\*|\\-|_|#]{2}"
-displaynamefilter:
-  priority: 1
-  regex_clean_names:
-    - "^(\\|?(\\w{2,3})[:|-])\\s(.*)"
+
 vodfilter:
-  priority: 2
   hide: true
+  priority: 1
+  regex: 
+  - "\\.(mkv|avi|mp4)$"
+
+displaynamefilter:
+  priority: 2
+  regex:
+    - "(\\w{2,3})\\s[:|\\-]\\s*(.*)$"
+
 qualityfilter:
   priority: 3
   default: hd
@@ -20,6 +24,7 @@ qualityfilter:
     "fhd": "(.*)(\\bfhd|1080p?i?\\b)(.*)$"
     "4k": "(.*)(\\b4k|2160p?\\b)(.*)$"
     "8k": "(.*)(\\b8k|4320p?|ᵁᴴᴰ\\b)(.*)$"
+
 acceptedfilter:
   priority: 4
   language:
@@ -30,13 +35,17 @@ acceptedfilter:
     - "fhd"
     - "4k"
     - "8k"
+
 shiftfilter:
   priority: 5
   regex: "(.+)\\+(\\d+)"
+
 cleannamefilter:
   priority: 19
   regex:
-    - "(\\(.*\\))|(^.+:)|(hevc)|(h265)|(XTRA)"
+    - "\\b(hevc)|(h265)|(XTRA)\\b"
+    - "[!$%&'\"()\\*\\+,\\.:/;<=>?@\\[\\]\\^_`{|}~◉]"
+    
 groupingfilter:
   priority: 21
   map:
@@ -47,7 +56,66 @@ groupingfilter:
     Osn: "osn|pehla"
     Tunisia: "tunisi(e|a)?"
     Sports: "sports?"
+
 piconfilter:
   priority: 25
   source_url: https://gist.githubusercontent.com/Fazzani/c07df41ebc867c8733a77a4277253dc0/raw/
-name: vipmax
+
+epgfilter:
+  enabled: false
+  priority: 20
+  index_url: https://raw.githubusercontent.com/Fazzani/grab/master/out/check_channels.json
+  matching_groups: 
+    - 
+      names: 
+        - "beIN VIP"
+        - "BeIN SPORTS"
+        - "beIN Media"
+      sources: 
+        - "http://www.bein.net"
+    - 
+      names: 
+        - "TUNISIA TV"
+      sources: 
+        - "http://www.watania.tn"
+    - 
+      names: 
+        - "OSN VIP"
+        - "Premium OSN"
+      sources: 
+        - "http://www.osn.com"
+    - 
+      names: 
+        - "ARAB TV"
+        - "FHD ARAB"
+        - "Kids AR"
+        - "AR News"
+        - MBC
+        - "MBC VIP"
+        - "AR HEVC"
+        - MyHD
+        - PEHLA
+        - "Islamic AR"
+        - "AR Egypt"
+      sources: 
+        - "http://www.elcinema.en.com"
+        - "http://www.elcinema.com"
+    - 
+      names: 
+        - "Chaîne Généraliste FR"
+        - "Sport FR"
+        - SFR-RMC
+        - Music
+        - "Musique FR"
+        - "Cinéma FR"
+        - "Séries & Divertissement FR"
+        - "FRANCE CH"
+        - "Découverte FR"
+        - "Jeunesse FR"
+        - "FRANCE CH (HEVC)"
+      sources: 
+        - "http://www.canalsat.fr"
+        - "http://www.telerama.fr"
+        - "http://www.tv.orange.fr"
+  matching_ratio: 0.6
+name: playlist

@@ -17,20 +17,21 @@ class GroupingFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
     @lru_cache(maxsize=32)
     @func_logger(enabled=True)
     def apply(self, value: Stream) -> Stream:
-        """Apply grouping streams  filter
+        """Apply grouping streams filter
 
         Arguments:
             value {str} -- stream name
 
         Returns:
-            Tuple[Optional[str], str] -- culture, clean stream name
+            Tuple[Optional[str], str] -- culture, group moving filter
         """
-        for group, regex in self.filter_config.map.__dict__.items():
-            match = re.search(regex, value.meta.tvg.group_title, re.IGNORECASE)
-            if match:
-                LOG.info(
-                    f"Moving {value.meta.display_name} from {value.meta.tvg.group_title} to group {group}"
-                )
-                value.meta.tvg.group_title = group
-                break
+        if not value.meta.isVod and not value.meta.isHeader:
+            value.meta.hidden = True
+            for group, regex in self.filter_config.map.__dict__.items():
+                match = re.search(regex, value.meta.tvg.group_title, re.IGNORECASE)
+                if match:
+                    LOG.debug(f"Moving {value.meta.display_name} from {value.meta.tvg.group_title} to group {group}")
+                    value.meta.tvg.group_title = group
+                    value.meta.hidden = False
+                    break
         return value

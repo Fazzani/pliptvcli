@@ -22,13 +22,9 @@ class ShiftFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         Returns:
             Tuple[str, str] -- quality, clean stream name
         """
-        self.__logger.debug(  # type: ignore
-            f"applying filter <{self.__class__.__name__}> on {str(value)} "
-        )
+        self.__logger.debug(f"applying filter <{self.__class__.__name__}> on {str(value)} ")  # type: ignore
 
-        match = re.search(
-            self.filter_config.regex, value.meta.display_name, re.IGNORECASE | re.DOTALL
-        )
+        match = re.search(self.filter_config.regex, value.meta.display_name, re.IGNORECASE | re.DOTALL)
         if match and len(match.groups()) > 1:
             if self.action == ActionEnum.REMOVE:
                 value.meta.hidden = True

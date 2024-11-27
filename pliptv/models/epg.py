@@ -7,7 +7,7 @@
 #     result = welcome_from_dict(json.loads(json_string))
 
 from dataclasses import dataclass
-from typing import Any, Optional, List, TypeVar, Type, cast, Callable
+from typing import Any, Callable, List, Optional, Type, TypeVar, cast
 
 T = TypeVar("T")
 

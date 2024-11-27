@@ -3,14 +3,14 @@ import os
 import re
 import sys
 from functools import lru_cache
-from typing import List, Any, Tuple
+from typing import Any, List, Tuple
 
 
 @lru_cache(maxsize=32)
 def load_modules_from_path(path, pattern: str = r".+\ d.py$") -> List[Tuple[str, str]]:
     """
-   Import all modules from the given directory
-   """
+    Import all modules from the given directory
+    """
     # Check and fix the path
     if path[-1:] != "/":
         path += "/"
@@ -61,8 +61,4 @@ def load_class_from_name(fqcn: str) -> Any:
 
 
 def class_list_from_modules(module: str, predicate=None) -> List[str]:
-    return [
-        name
-        for name, obj in inspect.getmembers(sys.modules[module], predicate)
-        if inspect.isclass(obj)
-    ]
+    return [name for name, obj in inspect.getmembers(sys.modules[module], predicate) if inspect.isclass(obj)]

@@ -13,3 +13,4 @@ PyInquirer~=1.0.3
 termcolor~=2.5.0
 coloredlogs==15.0
 validators~=0.34.0
+tqdm~=4.67.0

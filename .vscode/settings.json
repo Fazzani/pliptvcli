@@ -1,0 +1,10 @@
+{
+  "makefile.configureOnOpen": false,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    
+  },
+  "black-formatter.args": ["--line-length", "150"],
+  "cSpell.words": ["strm"]
+}

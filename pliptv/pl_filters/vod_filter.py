@@ -9,8 +9,6 @@ from pliptv.utils.log.decorators import func_logger
 
 LOG = logging.getLogger(__name__)
 
-vod_regex = re.compile(r"\.(mkv|avi|mp4)$")
-
 
 class VodFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
     def __init__(self, config: PlaylistConfig):
@@ -27,6 +25,10 @@ class VodFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         Returns:
             Tuple[Optional[str], str] -- culture, clean stream name
         """
-
-        value.meta.hidden = self.filter_config.hide and vod_regex.search(value.url)
+        for r in self.filter_config.regex:
+            match = re.search(r, value.url, re.IGNORECASE)
+            if match:
+                value.meta.hidden = self.filter_config.hide or value.meta.hidden
+                value.meta.isVod = True
+                break
         return value

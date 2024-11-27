@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import re
 from typing import Any, List, Tuple
 
@@ -11,6 +12,7 @@ from typing import Any, List, Tuple
  groups="<common group name>|<group name>"
  url-epg="<url to epg file in .xml format (if any) for this stream>" tvg-shift="+1",test
 """
+LOG: logging.Logger = logging.getLogger(__name__)
 
 CAR_RETURN = "\n"
 
@@ -52,6 +54,9 @@ class StreamMeta:
     def __init__(self, display_name: str, tvg: Tvg | None = None):
         self.tvg = tvg if tvg else Tvg()
         self.display_name = display_name
+        self.isVod = False
+        self.isHeader = False
+        self.hidden = False
 
     def __str__(self):
         return f"#EXTINF:-1 {str(self.tvg)}, {self.display_name}"
@@ -118,22 +123,13 @@ class M3u:
             raise StopIteration()
 
     def __str__(self):
-        return (
-            M3u.FILE_HEAD
-            + CAR_RETURN
-            + CAR_RETURN.join(
-                [
-                    str(stream)
-                    for stream in filter(lambda x: not x.meta.hidden, self.streams)
-                ]
-            )
-        )
+        return M3u.FILE_HEAD + CAR_RETURN + CAR_RETURN.join([str(stream) for stream in filter(lambda x: not x.meta.hidden, self.streams)])
 
     @staticmethod
     def _meta_from_header_line(m3u_header_line: str) -> StreamMeta:
         if not m3u_header_line:
             raise AssertionError
-        meta_raw_array = m3u_header_line.split(",")
+        meta_raw_array = m3u_header_line.rsplit(",", 1)
         meta = StreamMeta(meta_raw_array[1], Tvg())
 
         meta.tvg.tvg_id = M3u._get_header_value(meta_raw_array[0], "tvg-id")
@@ -164,9 +160,5 @@ class M3u:
         """
         if not pl:
             raise AssertionError
-        streams = []
-        for item in pl:
-            print(f"{str(item)}")
-            streams.append(Stream(item[1], M3u._meta_from_header_line(item[0])))
 
-        return cls(name, streams)
+        return cls(name, list(map(lambda x: Stream(x[1], M3u._meta_from_header_line(x[0])), pl)))

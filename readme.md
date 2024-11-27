@@ -27,11 +27,7 @@ docker run --rm -e "PL=$PL" -v "${PWD}:/data" synker/xpl:latest
 
 ## TODO
 
-- [ ] Parallel filters
-- [ ] Filter: group order
-- [ ] Filter: VOD group ?
 - [ ] Enhancing reporting by filter
-- [ ] generate strm files
 - [ ] Enhancing tests
 - [ ] Enhancing playlist export (gist, azure, etc...)
 - [ ] Ability to execute an external (remote) filter from url

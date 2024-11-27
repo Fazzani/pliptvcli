@@ -67,9 +67,9 @@ git_rebase_p:
 docker_b:
 	@docker build -t synker/xpl:latest .
 docker_r:
-	@docker run --rm --env-file ./.envd -v "$(PWD)/data:/data" synker/xpl:latest --export --auto
+	@docker run --rm --env-file ./.envd -v "$(PWD)/data:/data" synker/xpl:latest --export --auto --vod
 run:
-	dotenv python main.py --auto --export
+	dotenv python main.py --auto --export --vod
 mrproper:
 	@rm -rf build
 	@rm -rf .coverage

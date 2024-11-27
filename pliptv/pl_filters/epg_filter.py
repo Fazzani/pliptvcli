@@ -45,9 +45,7 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         )
 
         if epg_sources:
-            epg_urls: List[str] = reduce(
-                lambda x, y: x + y, [e["sources"] for e in epg_sources]
-            )
+            epg_urls: List[str] = reduce(lambda x, y: x + y, [e["sources"] for e in epg_sources])
             for c in filter(lambda e: e.url in epg_urls, epg.tv.channel):
                 r = SequenceMatcher(
                     None,
@@ -61,11 +59,7 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         if channel_epg and ratio > self.filter_config.matching_ratio:
             value.meta.tvg.tvg_id = channel_epg.id
             value.meta.tvg.tvg_name = channel_epg.id
-            value.meta.tvg.tvg_logo = (
-                channel_epg.icon.src
-                if channel_epg.icon and value.meta.tvg.tvg_logo
-                else value.meta.tvg.tvg_logo
-            )
+            value.meta.tvg.tvg_logo = channel_epg.icon.src if channel_epg.icon and value.meta.tvg.tvg_logo else value.meta.tvg.tvg_logo
             # Filter report
             value.meta.tvg[f"__{__name__}__dn_b"] = value.meta.display_name
             value.meta.tvg[f"__{__name__}__dn_a"] = channel_epg.id

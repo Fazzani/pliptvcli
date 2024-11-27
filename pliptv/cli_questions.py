@@ -32,13 +32,9 @@ class FilePathValidator(Validator):
             if os.path.isfile(value.text):
                 return True
             else:
-                raise ValidationError(
-                    message="File not found", cursor_position=len(value.text)
-                )
+                raise ValidationError(message="File not found", cursor_position=len(value.text))
         else:
-            raise ValidationError(
-                message="You can't leave this blank", cursor_position=len(value.text)
-            )
+            raise ValidationError(message="You can't leave this blank", cursor_position=len(value.text))
 
 
 class UrlValidator(Validator):
@@ -47,13 +43,9 @@ class UrlValidator(Validator):
             if validators.url(value.text):
                 return True
             else:
-                raise ValidationError(
-                    message="File not found", cursor_position=len(value.text)
-                )
+                raise ValidationError(message="File not found", cursor_position=len(value.text))
         else:
-            raise ValidationError(
-                message="You can't leave this blank", cursor_position=len(value.text)
-            )
+            raise ValidationError(message="You can't leave this blank", cursor_position=len(value.text))
 
 
 def log(string, color, font="slant", figlet=False):
@@ -83,6 +75,15 @@ def ask_information(auto: bool = False) -> None:
             "validate": FilePathValidator,
             "default": os.getenv("CONFIG_FILE_PATH"),
             "when": lambda a: os.getenv("CONFIG_FILE_PATH") is None,
+            # "filter": lambda val: open(val).read(),
+        },
+        {
+            "type": "input",
+            "name": "strm_output_path",
+            "message": "Enter strm output path:",
+            "validate": FilePathValidator,
+            "default": os.getenv("STRM_OUTPUT_PATH"),
+            "when": lambda a: os.getenv("STRM_OUTPUT_PATH") is None,
             # "filter": lambda val: open(val).read(),
         },
         {

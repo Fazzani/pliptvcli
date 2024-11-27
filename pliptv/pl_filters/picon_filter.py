@@ -29,8 +29,6 @@ class PiconFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         picons = get_picons_index(self.filter_config.source_url)
         if key in picons.__dict__:
             value.meta.tvg.tvg_logo = picons.__dict__[key]
-            LOG.info(
-                f"Picons: matched {value.meta.display_name}: {value.meta.tvg.tvg_logo}"
-            )
+            LOG.debug(f"Picons: matched {value.meta.display_name}: {value.meta.tvg.tvg_logo}")
 
         return value
