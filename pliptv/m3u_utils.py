@@ -30,6 +30,7 @@ from pliptv.pl_filters.filters_loader import (
 DEFAULT_FILTERS_PATH = os.path.join(os.path.dirname(__file__), "./pl_filters")
 DEFAULT_FILTERS_PATTERN = r".+_filter.py$"
 LOG = logging.getLogger(__name__)
+ENCODING_UTF8 = "UTF-8"
 
 
 def download_file(pl_url: str) -> List[Tuple[str, str]]:
@@ -48,7 +49,7 @@ def download_file(pl_url: str) -> List[Tuple[str, str]]:
     if not res_parse_url.netloc:
         raise AssertionError
     r = requests.get(pl_url)
-    lines = StringIO(r.content.decode("utf-8")).readlines()
+    lines = StringIO(r.content.decode(ENCODING_UTF8)).readlines()
     if not lines:
         raise AssertionError
     return get_lines(lines)
@@ -135,7 +136,7 @@ def save_pl(pl: M3u) -> str:
 def save_pl_to_path(pl: M3u, output_path: str) -> str:
     """Save playlist file to output path"""
     file_result = os.path.join(output_path, f"{pl.name}.m3u")
-    with open(file_result, "w+", encoding="utf-8") as file:
+    with open(file_result, "w+", encoding=ENCODING_UTF8) as file:
         file.write(str(pl))
     return file_result
 

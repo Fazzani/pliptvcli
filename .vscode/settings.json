@@ -6,5 +6,8 @@
     
   },
   "black-formatter.args": ["--line-length", "150"],
-  "cSpell.words": ["strm"]
+  "cSpell.words": [
+    "figlet",
+    "strm"
+  ]
 }

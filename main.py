@@ -1,6 +1,8 @@
 import logging
 import multiprocessing
 import os
+import re
+import shutil
 from typing import Any
 
 import click
@@ -9,6 +11,7 @@ from tqdm import tqdm
 from pliptv.cli_questions import ask_information, log
 from pliptv.config_loader import PlaylistConfig
 from pliptv.m3u_utils import (
+    ENCODING_UTF8,
     apply_filters,
     download_file,
     get_filter_pool,
@@ -26,6 +29,8 @@ setup_logging()
 
 LOG: logging.Logger = logging.getLogger(__name__)
 STRM_EXT = ".strm"
+TV_SERIES_REGEX = re.compile(r"^(\b.+[\s])*(s\d{1,4})[^\w](e\d{1,3})$", flags=re.IGNORECASE)
+IS_ARABIC_REGEX = re.compile(r"[\u0600-\u06FF]")
 
 
 @click.command()
@@ -99,7 +104,7 @@ def main(auto: bool, export: bool, vod: bool) -> None:
             log(f"Downloading playlist from {pl_url}", "white")
             lines = download_file(pl_url)
         else:
-            with open(pl_url, "r", encoding="utf8") as f:
+            with open(pl_url, "r", encoding=ENCODING_UTF8) as f:
                 lines = get_lines(f.readlines())
         log(f"{len(lines)} streams retrieved", "green")
 
@@ -152,28 +157,36 @@ def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: Playlist
     strm_output_path = str(pl_info.get("strm_output_path"))
     if vod and strm_output_path is not None:
         log(
-            f"Generating VOD strm files url for {m3u.name.capitalize()} into {strm_output_path}",
+            f"Generating VOD strm files into {strm_output_path}",
             "green",
         )
         # TODO: filter multiprocessing
 
+        videos_output_path: str = os.path.join(strm_output_path, "movies")
+        tv_series_output_path: str = os.path.join(strm_output_path, "series")
+
         accepted_cultures = AcceptedFilter(playlist_config).filter_config.language
         vod_list: list[Stream] = list(filter(lambda x: x.meta.isVod and str.lower(x.meta.culture) in accepted_cultures, m3u.streams))
-        titles: list[str] = list(map(lambda x: x.meta.display_name, vod_list))
 
         if cleanup_folder:
-            for filename in tqdm(os.listdir(strm_output_path), desc="Cleaning up VOD folder"):
-                if filename.removesuffix(STRM_EXT) not in titles:
-                    os.remove(os.path.join(strm_output_path, filename))
+            if os.path.exists(videos_output_path):
+                log(f"Cleanup: {videos_output_path}", "yellow")
+                shutil.rmtree(videos_output_path)
+            if os.path.exists(tv_series_output_path):
+                log(f"Cleanup: {tv_series_output_path}", "yellow")
+                shutil.rmtree(tv_series_output_path)
 
         for stream in tqdm(
             vod_list,
             desc="VOD strm processing",
         ):
-            strm_output_fullpath: str = os.path.join(strm_output_path, stream.meta.display_name.strip() + STRM_EXT)
+            match_tv_series = TV_SERIES_REGEX.search(stream.meta.display_name)
+            output_path = os.path.join(tv_series_output_path, match_tv_series.group(1).strip()) if match_tv_series else videos_output_path
+            strm_output_fullpath: str = os.path.join(output_path, stream.meta.display_name.strip() + STRM_EXT)
             try:
                 if not os.path.exists(strm_output_fullpath):
-                    with open(strm_output_fullpath, "w") as f:
+                    os.makedirs(output_path, exist_ok=True)
+                    with open(strm_output_fullpath, "w", encoding=ENCODING_UTF8) as f:
                         f.write(stream.url)
             except Exception as e:
                 log(f"Error while generating VOD stream: {e} {stream.url}", "red")

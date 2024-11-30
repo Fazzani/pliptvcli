@@ -43,7 +43,7 @@ shiftfilter:
 cleannamefilter:
   priority: 19
   regex:
-    - "\\b(hevc)|(h265)|(XTRA)\\b"
+    - "\\b(hevc)|(h265)|(XTRA)|(مسلسل)|(فیلم)\\b"
     - "[!$%&'\"()\\*\\+,\\.:/;<=>?@\\[\\]\\^_`{|}~◉]"
     
 groupingfilter:
