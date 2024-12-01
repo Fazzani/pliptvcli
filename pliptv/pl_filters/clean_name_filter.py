@@ -16,5 +16,5 @@ class CleanNameFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
     def apply(self, value: Stream) -> Stream:
         for reg in self.filter_config.regex:
             regex = re.compile(reg, re.IGNORECASE | re.DOTALL)
-            value.meta.display_name = regex.sub(" ", value.meta.display_name)
+            value.meta.display_name = regex.sub("", value.meta.display_name).strip()
         return value

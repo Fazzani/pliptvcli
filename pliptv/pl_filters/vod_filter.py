@@ -28,7 +28,13 @@ class VodFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         for r in self.filter_config.regex:
             match = re.search(r, value.url, re.IGNORECASE)
             if match:
-                value.meta.hidden = self.filter_config.hide or value.meta.hidden
                 value.meta.isVod = True
+                if not value.meta.hidden:
+                    for reg in self.filter_config.hidden_groups:
+                        match_group = re.search(reg, value.meta.tvg.group_title, re.IGNORECASE)
+                        if match_group:
+                            value.meta.hidden = True
+                            break
                 break
+
         return value

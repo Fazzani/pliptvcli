@@ -8,9 +8,9 @@
     "type": "debugpy",
     "request": "launch",
     "program": "${file}",
-    "console": "integratedTerminal",
+    "console": "internalConsole",
     "args": ["--auto", "--vod"],
-    "envFile": "${workspaceFolder}/.env",
+    "envFile": "${workspaceFolder}/dev.env",
     "autoReload": {
       "enable": true
     }

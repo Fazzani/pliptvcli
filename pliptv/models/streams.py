@@ -39,6 +39,9 @@ class Tvg:
     def __str__(self):
         return f'tvg-id="{self.tvg_id}" tvg-name="{self.tvg_name}" tvg-logo="{self.tvg_logo}" tvg-shift="{self.tvg_shift}" group-title="{self.group_title}" '
 
+    def __repr__(self):
+        return f'tvg-id="{self.tvg_id}" tvg-name="{self.tvg_name}" tvg-logo="{self.tvg_logo}" tvg-shift="{self.tvg_shift}" group-title="{self.group_title}" '
+
     def __getitem__(self, key):
         return self.meta[key] if key in self.meta.keys() else ""
 
@@ -60,6 +63,9 @@ class StreamMeta:
 
     def __str__(self):
         return f"#EXTINF:-1 {str(self.tvg)}, {self.display_name}"
+
+    def __repr__(self):
+        return f"{self.display_name}"
 
     def __getitem__(self, item: Any):
         return self.tvg[item]
@@ -98,6 +104,9 @@ class Stream:
         self.meta = meta
 
     def __str__(self):
+        return f"{str(self.meta)}{CAR_RETURN}{self.url}"
+
+    def __repr__(self):
         return f"{str(self.meta)}{CAR_RETURN}{self.url}"
 
 

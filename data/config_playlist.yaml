@@ -5,10 +5,11 @@ removeheadersfilter:
     - "^[\\*|\\-|_|#]{2}"
 
 vodfilter:
-  hide: true
   priority: 1
   regex: 
   - "\\.(mkv|avi|mp4)$"
+  hidden_groups:
+  - "\\b(برامج)|(ليبيا)|(مغربية)|(أجنبية)|(آسيوية)|(هندية)|(مدبلجة)|(رعب)|(ألمانيه)|(مترجمة)|(تركية)|(اغاني)(رياضه\\sمتنوعه)\\b"
 
 displaynamefilter:
   priority: 2
@@ -43,13 +44,14 @@ shiftfilter:
 cleannamefilter:
   priority: 19
   regex:
-    - "\\b(hevc)|(h265)|(XTRA)|(مسلسل)|(فیلم)\\b"
+    - "\\b(hevc)|(h265)|(XTRA)|(film)|(اغاني)||(طرب)|(مسلسل(?:ات)?(?:ال)?)|(الفلم|فلم|الفيلم|الفیلم|فيلم)|(بودكاست?(ال)?)|(برنامج?(ال)?)|(مسرحية)\\b"
+    - \\b(محمد\sسعد)\\b"
     - "[!$%&'\"()\\*\\+,\\.:/;<=>?@\\[\\]\\^_`{|}~◉]"
     
 groupingfilter:
   priority: 21
   map:
-    France: "\\bfr\\b|france|sfr|dazn"
+    France: "\\bfr\\b|france"
     BeinSports: "bein\\s?sports?"
     Rotana: "(rotana|art)+"
     Mbc: "mbc"
