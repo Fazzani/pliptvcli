@@ -2,9 +2,11 @@ import logging
 import multiprocessing
 import os
 import re
-from typing import Any
+from datetime import datetime
+from typing import Any, Optional, cast
 
 import click
+import jsonpickle
 from tqdm import tqdm
 
 from pliptv.cli_questions import ask_information, log
@@ -28,8 +30,12 @@ setup_logging()
 
 LOG: logging.Logger = logging.getLogger(__name__)
 STRM_EXT = ".strm"
-TV_SERIES_REGEX = re.compile(r"^(\b.+[\s])*(s\d{1,4})[^\w](e\d{1,4})$", flags=re.IGNORECASE)
+TV_SERIES_REGEX = re.compile(r"(.+[\s])*(s\d{1,4})[^\w](e\d{1,4})", flags=re.IGNORECASE)
 IS_ARABIC_REGEX = re.compile(r"[\u0600-\u06FF]")
+
+# TODO: combine using click with env variables and remove 'ask_information'
+# TODO: notification when processing finished
+# TODO: Python 12 migration
 
 
 @click.command()
@@ -49,12 +55,21 @@ IS_ARABIC_REGEX = re.compile(r"[\u0600-\u06FF]")
 )
 @click.option(
     "--vod",
+    "is_generation_vod_enabled",
     default=False,
     type=bool,
     is_flag=True,
     help="Generate VOD 'strm' file",
 )
-def main(auto: bool, export: bool, vod: bool) -> None:
+@click.option(
+    "--cache",
+    "is_cache_enabled",
+    default=False,
+    type=bool,
+    is_flag=True,
+    help="Persist generated playlist",
+)
+def main(auto: bool, export: bool, is_generation_vod_enabled: bool, is_cache_enabled: bool) -> None:
     """
     Extensible CLI m3u playlist manager
     many default filters was provided for:
@@ -105,9 +120,10 @@ def main(auto: bool, export: bool, vod: bool) -> None:
         else:
             with open(pl_url, "r", encoding=ENCODING_UTF8) as f:
                 lines = get_lines(f.readlines())
+
         log(f"{len(lines)} streams retrieved", "green")
 
-        m3u = M3u.from_list("playlist", lines)
+        m3u: M3u = M3u.from_list("playlist", lines)
 
         log("Loading filters", "white")
         filters = load_filters()
@@ -127,11 +143,20 @@ def main(auto: bool, export: bool, vod: bool) -> None:
         file_result = save_pl_to_path(m3u, str(pl_info.get("playlist_output_path")))
         log(f"Generated playlist for {m3u.name.capitalize()}: {file_result}", "white")
 
-        if export:
-            url = save_pl(m3u)
-            log(f"Generated playlist url for {m3u.name.capitalize()}: {url}", "white")
+        if is_cache_enabled:
+            cache_playlist_generation(m3u)
 
-        vod_processing(vod, pl_info, playlist_config, m3u, True)
+        if export:
+            url: str = save_pl(m3u)
+            LOG.debug(f"Playlist Exported to: {url}", "white")
+
+        created_streams = vod_processing(is_generation_vod_enabled, pl_info, playlist_config, m3u)
+
+        if is_cache_enabled:
+            cache_playlist_generation(m3u, "_final")
+
+        if created_streams:
+            cleanup(created_streams, str(pl_info.get("strm_output_path")))
 
         # Display report
         # get_report(m3u)
@@ -143,7 +168,15 @@ def main(auto: bool, export: bool, vod: bool) -> None:
         log("The end.", "green")
 
 
-def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: PlaylistConfig, m3u: M3u, cleanup_folder: bool = False) -> None:
+def cache_playlist_generation(m3u, suffix: str = ""):
+    log("Cache generation...", "green")
+
+    generation_data: str = datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")
+    with open(f"cache_{generation_data}{suffix}.json", "w", encoding="utf-8") as f:
+        f.write(cast(str, jsonpickle.encode(m3u, indent=4)))
+
+
+def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: PlaylistConfig, m3u: M3u) -> Optional[list[str]]:
     """STRM VOD files generator.
 
     Args:
@@ -175,7 +208,7 @@ def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: Playlist
             desc="VOD strm processing",
         ):
             match_tv_series = TV_SERIES_REGEX.search(stream.meta.display_name)
-            output_path = os.path.join(tv_series_output_path, match_tv_series.group(1).strip()) if match_tv_series else videos_output_path
+            output_path: str = os.path.join(tv_series_output_path, match_tv_series.group(1).strip()) if match_tv_series else videos_output_path
             strm_output_fullpath: str = os.path.join(output_path, stream.meta.display_name.strip() + STRM_EXT)
             try:
                 created_streams.append(strm_output_fullpath)
@@ -187,23 +220,27 @@ def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: Playlist
                 log(f"Error while generating VOD stream: {e} {stream.url}", "red")
                 continue
 
-        if cleanup_folder:
-            cleanup(created_streams, strm_output_path)
-
         log(
             f"Generated VOD strm files for playlist: {m3u.name.capitalize()} into {strm_output_path}",
             "green",
         )
+        return created_streams
 
 
 def cleanup(created_streams: list[str], strm_output_path: str):
+    """Removes all streams that weren't yet existed in the playlist from output path.
+
+    Args:
+        created_streams (list[str]): all streams that were created
+        strm_output_path (str): streams output path (root directory)
+    """
     import glob
 
     LOG.debug(f"Cleanup: {strm_output_path}")
-    for file_path in tqdm(list(glob.iglob(f"{strm_output_path}/**/*{STRM_EXT}", recursive=True)), desc="Cleaning up VOD folder"):
+    for file_path in tqdm(glob.iglob(f"{strm_output_path}/**/*{STRM_EXT}", recursive=True), desc="Cleaning up VOD folder"):
         if file_path not in created_streams:
             os.remove(file_path)
-            dir_name = os.path.dirname(file_path)
+            dir_name: str = os.path.dirname(file_path)
             if len(os.listdir(dir_name)) == 0:
                 os.rmdir(dir_name)
 

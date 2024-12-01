@@ -114,3 +114,4 @@ test-reports/
 .idea/
 log/
 tmp
+cache_*.json

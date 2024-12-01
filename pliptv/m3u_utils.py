@@ -10,6 +10,7 @@ import logging
 import os
 import string
 from io import StringIO
+from json import JSONEncoder
 from typing import List, Tuple
 from urllib.parse import urlparse
 
@@ -143,3 +144,8 @@ def save_pl_to_path(pl: M3u, output_path: str) -> str:
 
 def translate_channel_name(name: str) -> str:
     return name.translate(str.maketrans(dict.fromkeys(string.punctuation))).title()
+
+
+class CustomJSONEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__
