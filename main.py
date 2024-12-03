@@ -15,10 +15,10 @@ from pliptv.m3u_utils import (
     ENCODING_UTF8,
     apply_filters,
     download_file,
+    export_playlist,
     get_filter_pool,
     get_lines,
     load_filters,
-    save_pl,
     save_pl_to_path,
 )
 from pliptv.models.streams import M3u, Stream
@@ -139,24 +139,28 @@ def main(auto: bool, export: bool, is_generation_vod_enabled: bool, is_cache_ena
                 [res.get() for res in tqdm(multiple_results, desc="Live Tv processing")],
             )
 
-        log(f"Saving {m3u.name.capitalize()}", "white")
-        file_result = save_pl_to_path(m3u, str(pl_info.get("playlist_output_path")))
+        channels_list = M3u(m3u.name, list(filter(lambda x: not x.meta.is_vod and not x.meta.hidden, m3u)))
+        log(f"Saving {m3u.name.capitalize()} with {len(channels_list.streams)} channels", "yellow")
+        file_result = save_pl_to_path(channels_list, str(pl_info.get("playlist_output_path")))
+
         log(f"Generated playlist for {m3u.name.capitalize()}: {file_result}", "white")
 
         if is_cache_enabled:
             cache_playlist_generation(m3u)
 
         if export:
-            url: str = save_pl(m3u)
+            url: str = export_playlist(channels_list)
             LOG.debug(f"Playlist Exported to: {url}", "white")
 
-        created_streams = vod_processing(is_generation_vod_enabled, pl_info, playlist_config, m3u)
+        vod_created_streams = vod_processing(is_generation_vod_enabled, pl_info, playlist_config, m3u)
+        if vod_created_streams:
+            log(f"Processed {m3u.name.capitalize()} with {len(vod_created_streams)} vod", "yellow")
 
         if is_cache_enabled:
             cache_playlist_generation(m3u, "_final")
 
-        if created_streams:
-            cleanup(created_streams, str(pl_info.get("strm_output_path")))
+        if vod_created_streams:
+            cleanup(vod_created_streams, str(pl_info.get("strm_output_path")))
 
         # Display report
         # get_report(m3u)
@@ -199,7 +203,7 @@ def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: Playlist
 
         accepted_cultures = AcceptedFilter(playlist_config).filter_config.language
         vod_list: list[Stream] = list(
-            filter(lambda x: x.meta.isVod and not x.meta.hidden and str.lower(x.meta.culture) in accepted_cultures, m3u.streams)
+            filter(lambda x: x.meta.is_vod and not x.meta.hidden and str.lower(x.meta.culture) in accepted_cultures, m3u.streams)
         )
 
         created_streams: list[str] = []

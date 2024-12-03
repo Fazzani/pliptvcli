@@ -125,7 +125,7 @@ def shorten_url(url: str, access_token: str) -> str:
     return Shortener(api_key=access_token).bitly.short(url)
 
 
-def save_pl(pl: M3u) -> str:
+def export_playlist(pl: M3u) -> str:
     """Save playlist file on azure and return shorten url from bit"""
     url = upload_bytes_to_azure(f"{pl.name}.m3u", str(pl))
     at = os.getenv("BITLY_ACCESS_TOKEN")

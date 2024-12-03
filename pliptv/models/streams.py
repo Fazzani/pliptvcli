@@ -57,8 +57,8 @@ class StreamMeta:
     def __init__(self, display_name: str, tvg: Tvg | None = None):
         self.tvg = tvg if tvg else Tvg()
         self.display_name = display_name
-        self.isVod = False
-        self.isHeader = False
+        self.is_vod = False
+        self.is_header = False
         self.hidden = False
 
     def __str__(self):

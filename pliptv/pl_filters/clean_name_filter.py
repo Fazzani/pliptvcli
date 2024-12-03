@@ -17,4 +17,6 @@ class CleanNameFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         for reg in self.filter_config.regex:
             regex = re.compile(reg, re.IGNORECASE | re.DOTALL)
             value.meta.display_name = regex.sub("", value.meta.display_name).strip()
+        for replacement in self.filter_config.replacements:
+            value.meta.display_name.replace(replacement, "")
         return value

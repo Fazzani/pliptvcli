@@ -25,7 +25,7 @@ class GroupingFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         Returns:
             Tuple[Optional[str], str] -- culture, group moving filter
         """
-        if not value.meta.isVod and not value.meta.isHeader:
+        if not value.meta.is_vod and not value.meta.is_header:
             value.meta.hidden = True
             for group, regex in self.filter_config.map.__dict__.items():
                 match = re.search(regex, value.meta.tvg.group_title, re.IGNORECASE)

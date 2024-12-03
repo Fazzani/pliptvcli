@@ -30,12 +30,12 @@ class RemoveHeadersFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
                 match = re.search(r, value.meta.display_name, re.IGNORECASE)
                 if match:
                     value.meta.hidden = True
-                    value.meta.isHeader = True
+                    value.meta.is_header = True
                     break
                 else:
                     match = re.search(r, value.meta.tvg.tvg_name, re.IGNORECASE)
                     if match:
                         value.meta.hidden = True
-                        value.meta.isHeader = True
+                        value.meta.is_header = True
                         break
         return value
