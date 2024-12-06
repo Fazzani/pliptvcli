@@ -53,6 +53,7 @@ class StreamMeta:
     QUALITY_KEY: str = "quality"
     CULTURE_KEY: str = "culture"
     HIDDEN_KEY: str = "hidden"
+    COUNTRY_KEY: str = "country"
 
     def __init__(self, display_name: str, tvg: Tvg | None = None):
         self.tvg = tvg if tvg else Tvg()
@@ -60,6 +61,7 @@ class StreamMeta:
         self.is_vod = False
         self.is_header = False
         self.hidden = False
+        self.country = "none"
 
     def __str__(self):
         return f"#EXTINF:-1 {str(self.tvg)}, {self.display_name}"
@@ -80,6 +82,14 @@ class StreamMeta:
     @culture.setter
     def culture(self, value):
         self.tvg[StreamMeta.CULTURE_KEY] = value
+
+    @property
+    def country(self):
+        return self.tvg[StreamMeta.COUNTRY_KEY]
+
+    @country.setter
+    def country(self, value):
+        self.tvg[StreamMeta.COUNTRY_KEY] = value
 
     @property
     def hidden(self):

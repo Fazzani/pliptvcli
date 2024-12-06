@@ -24,8 +24,15 @@ class AcceptedFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         Returns:
             Tuple[Optional[str], str] -- culture, clean stream name
         """
-        if not value.meta.hidden:
+
+        # TODO: support the not "!" operator
+        value.meta[f"__{__class__.__name__}__hidden"] = False
+
+        if not value.meta.hidden and not value.meta.is_header:
             value.meta.hidden = (
-                str.lower(value.meta.culture) not in self.filter_config.language or str.lower(value.meta.quality) not in self.filter_config.quality
+                str.lower(value.meta.culture) not in self.filter_config.language
+                or str.lower(value.meta.quality) not in self.filter_config.quality
+                or str.lower(value.meta.country) in self.filter_config.country
             )
+            value.meta[f"__{__class__.__name__}__hidden"] = value.meta.hidden
         return value

@@ -3,19 +3,20 @@ removeheadersfilter:
   priority: 0
   regex:
     - "^[\\*|\\-|_|#]{2}"
+    - "\\b(a\\sla\\scarte)|(live)|(multivision)|(shahid)|(netflix)|(ppv)|(orange\\scinema)|(ocs\\sgo)|(hbo)|(bein\\sod)|(amazon)|(disney)|(canalplay)\\b"
 
 vodfilter:
   priority: 1
   regex: 
-  - "\\.(mkv|avi|mp4)$"
+  - "\\.(mkv|avi|mp4|mpe?g|mov|wmv|flv|webm)$"
   hidden_groups:
   - "\\b(خليجية)|(جزائرية)|(مسيحية)|(يعرض)|(انمي)|(آسيوي)|(بودكاست)|(أجنبي)|(مدبلج)|(مترجم)|(منوعات)|(برامج)|(ليبيا)|(مغربية)|(أجنبية)|(آسيوية)|(هندية)|(مدبلجة)|(رعب)|(ألمانيه)|(مترجمة)|(تركية)|(اغاني)|(أغاني)|(طرب)|(رياضه\\sمتنوعه)\\b"
-  - "\\b(HANDBALL)|(F1)|(MOTO)|(FOOTBALL)|(wwe)|(CYCLISME)|(GOLF)|(BASKETBALL)|(WRC)|(Subs)|(Dub)\\b"
+  - "\\b(HANDBALL)|(F1)|(MOTO)|(FOOTBALL)|(wwe)|(CYCLISME)|(GOLF)|(BASKETBALL)|(WRC)|(Subs)|(Dub)|(Play)|(golf)\\b"
 
 displaynamefilter:
   priority: 2
   regex:
-    - "^(\\w{2,3})\\s*[:|\\-]\\s*(.*)$"
+    - "^((?:\\w{2,3})\\s*(?:\\w{0,3}))*[:|\\-]\\s*(.*)$"
 
 qualityfilter:
   priority: 3
@@ -32,11 +33,16 @@ acceptedfilter:
   language:
     - "fr"
     - "ar"
+    - "8k"
   quality:
     - "hd"
     - "fhd"
     - "4k"
     - "8k"
+  country:
+    - "af"
+    - "gold"
+    - "ca fr"
 
 shiftfilter:
   priority: 5
@@ -56,12 +62,13 @@ cleannamefilter:
 groupingfilter:
   priority: 21
   map:
-    France: "\\bfr\\b|france"
+    France: "\\b(fr)|(france)\\b"
     BeinSports: "bein\\s?sports?"
     Rotana: "(rotana|art)+"
-    Mbc: "mbc"
-    Osn: "osn|pehla"
+    Mbc: "\\bmbc\\b"
+    Osn: "\\bosn\\b"
     Tunisia: "tunisi(e|a)?"
+  hidden_groups:
 
 piconfilter:
   priority: 25
