@@ -27,10 +27,10 @@ class DisplayNameFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         """
 
         for regex_compiled in map(
-            lambda x: re.compile(x, re.IGNORECASE),
+            lambda x: re.compile(x, re.I | re.U),
             self.filter_config.regex,
         ):
-            match = regex_compiled.match(value.meta.display_name)
+            match = regex_compiled.match(value.meta.display_name.replace("◉", "ar"))
             if match and len(match.groups()) > 1:
                 value.meta.culture = match.group(1).strip().lower()
                 value.meta.display_name = match.group(2).strip().capitalize()
@@ -38,7 +38,7 @@ class DisplayNameFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
                 value.meta.tvg[f"__{__name__}__dn_a"] = value.meta.display_name
                 value.meta.tvg[f"__{__name__}__cu_a"] = value.meta.culture
 
-            match = regex_compiled.match(value.meta.tvg.tvg_name)
+            match = regex_compiled.match(value.meta.tvg.tvg_name.replace("◉", "ar"))
             if match and len(match.groups()) > 1:
                 value.meta.country = match.group(1).strip().lower()
 

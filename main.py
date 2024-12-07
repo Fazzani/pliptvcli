@@ -112,7 +112,7 @@ def main(auto: bool, export: bool, is_generation_vod_enabled: bool, is_cache_ena
         if pl_info is None:
             raise Exception("pl_info is required")
 
-        log(f"✓ pl_info: {str(pl_info)}", "green")
+        log(f"✓✓✓ pl_info: {str(pl_info)}", "green")
 
         playlist_config = PlaylistConfig(str(pl_info.get("playlist_config_path")))
         pl_url: str = str(pl_info.get("playlist_url"))
@@ -123,13 +123,13 @@ def main(auto: bool, export: bool, is_generation_vod_enabled: bool, is_cache_ena
             with open(pl_url, "r", encoding=ENCODING_UTF8) as f:
                 lines = get_lines(f.readlines())
 
-        log(f"✓ {len(lines)} streams retrieved", "green")
+        log(f"✓✓✓ {len(lines)} streams retrieved", "green")
 
         m3u: M3u = M3u.from_list("playlist", lines)
 
         log("Loading filters", "white")
         filters = load_filters()
-        log(f"✓ {len(filters)} filters loaded", "green")
+        log(f"✓✓✓ {len(filters)} filters loaded", "green")
 
         log(f"Applying filters on {m3u.name.capitalize()}", "white")
         filter_pool = get_filter_pool(filters, playlist_config)
@@ -171,11 +171,11 @@ def main(auto: bool, export: bool, is_generation_vod_enabled: bool, is_cache_ena
         log(f"Unexpected error: {err}", "red")
         raise
     finally:
-        log("✓ The end.", "green")
+        log("✓✓✓ The end.", "green")
 
 
 def cache_playlist_generation(m3u, suffix: str = ""):
-    log("✓ Cache generation...", "green")
+    log("✓✓✓ Cache generation...", "green")
 
     generation_data: str = datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")
     with open(f"cache_{generation_data}{suffix}.json", "w", encoding="utf-8") as f:
@@ -195,7 +195,7 @@ def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: Playlist
     strm_output_path = str(pl_info.get("strm_output_path"))
     if vod and strm_output_path is not None:
         log(
-            f"✓ Generating VOD strm files into {strm_output_path}",
+            f"✓✓✓ Generating VOD strm files into {strm_output_path}",
             "green",
         )
         # TODO: filter multiprocessing
@@ -227,7 +227,7 @@ def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: Playlist
                 continue
 
         log(
-            f"✓ Generated VOD strm files for playlist: {m3u.name.capitalize()} into {strm_output_path}",
+            f"✓✓✓ Generated VOD strm files for playlist: {m3u.name.capitalize()} into {strm_output_path}",
             "green",
         )
         return created_streams
