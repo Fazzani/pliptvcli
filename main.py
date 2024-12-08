@@ -152,7 +152,7 @@ def main(auto: bool, export: bool, is_generation_vod_enabled: bool, is_cache_ena
 
         if export:
             url: str = export_playlist(channels_list)
-            LOG.debug(f"Playlist Exported to: {url}", "white")
+            log(f"✓✓✓ Playlist exported to: {url}", "green")
 
         vod_created_streams = vod_processing(is_generation_vod_enabled, pl_info, playlist_config, m3u)
         if vod_created_streams:

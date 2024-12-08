@@ -25,11 +25,15 @@ class DisplayNameFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         Returns:
             Tuple[Optional[str], str] -- culture, clean stream name
         """
-
+        quality_filter = re.compile(r"^((?:4k|8k)\s*[\-:|]*)", re.I)
         for regex_compiled in map(
             lambda x: re.compile(x, re.I | re.U),
             self.filter_config.regex,
         ):
+            match = quality_filter.match(value.meta.display_name)
+            if match:
+                value.meta.display_name = value.meta.display_name.replace(match.group(1), "") + f" {match.group(1)}"
+
             match = regex_compiled.match(value.meta.display_name.replace("◉", "ar"))
             if match and len(match.groups()) > 1:
                 value.meta.culture = match.group(1).strip().lower()
