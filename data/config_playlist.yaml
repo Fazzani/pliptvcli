@@ -80,58 +80,45 @@ piconfilter:
 epgfilter:
   enabled: false
   priority: 20
-  index_url: https://raw.githubusercontent.com/Fazzani/grab/master/out/check_channels.json
+  index_url: https://raw.githubusercontent.com/Fazzani/grab/master/out/epg.csv
   matching_groups: 
     - 
       names: 
-        - "beIN VIP"
-        - "BeIN SPORTS"
-        - "beIN Media"
-      sources: 
-        - "http://www.bein.net"
+        - BeinSports
+        - BeinSports__ar
+        - BeinSports__qa
+      country: 
+        - qa
     - 
       names: 
-        - "TUNISIA TV"
-      sources: 
-        - "http://www.watania.tn"
+        - Tunisia
+        - Tunisia__tn
+        - Tunisia__ar
+      country: 
+        - tn
     - 
       names: 
-        - "OSN VIP"
-        - "Premium OSN"
-      sources: 
-        - "http://www.osn.com"
+        - Osn
+        - Mbc
+        - Rotana
+      country: 
+        - ar
+        - ae
+        - sa
+        - eg
+        - iq
+        - lb
+        - ma
+        - dz
     - 
       names: 
-        - "ARAB TV"
-        - "FHD ARAB"
-        - "Kids AR"
-        - "AR News"
-        - MBC
-        - "MBC VIP"
-        - "AR HEVC"
-        - MyHD
-        - PEHLA
-        - "Islamic AR"
-        - "AR Egypt"
-      sources: 
-        - "http://www.elcinema.en.com"
-        - "http://www.elcinema.com"
-    - 
-      names: 
-        - "Chaîne Généraliste FR"
-        - "Sport FR"
-        - SFR-RMC
-        - Music
-        - "Musique FR"
-        - "Cinéma FR"
-        - "Séries & Divertissement FR"
-        - "FRANCE CH"
-        - "Découverte FR"
-        - "Jeunesse FR"
-        - "FRANCE CH (HEVC)"
-      sources: 
-        - "http://www.canalsat.fr"
-        - "http://www.telerama.fr"
-        - "http://www.tv.orange.fr"
+        - France
+        - France__fr
+        - BeinSports__fr
+      country: 
+        - fr
+        - ca
+        - ch
+        - be
   matching_ratio: 0.6
 name: playlist

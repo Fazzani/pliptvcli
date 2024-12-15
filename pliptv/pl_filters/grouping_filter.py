@@ -42,8 +42,10 @@ class GroupingFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
                 for group, regex in self.filter_config.map.__dict__.items():
                     match = re.search(regex, value.meta.tvg.group_title, re.IGNORECASE)
                     if match:
-                        LOG.debug(f"Moving {value.meta.display_name} from {value.meta.tvg.group_title} to group {group}")
-                        value.meta.tvg.group_title = group
+                        group_value: str = f"{group}__{value.meta.country}" if value.meta.country else f"{group}__{value.meta.culture}"
+                        LOG.debug(f"Moving {value.meta.display_name} from {value.meta.tvg.group_title} to group {group_value}")
+
+                        value.meta.tvg.group_title = group_value
                         value.meta.hidden = False
                         break
 

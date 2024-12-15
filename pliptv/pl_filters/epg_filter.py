@@ -1,6 +1,6 @@
 from difflib import SequenceMatcher
 from functools import lru_cache, reduce
-from typing import Any, List, Optional
+from typing import List, Optional
 
 from pliptv.config_loader import PlaylistConfig
 from pliptv.epg_service import get_epg_index
@@ -9,10 +9,6 @@ from pliptv.models.epg import Channel, Epg
 from pliptv.models.streams import Stream
 from pliptv.pl_filters.filter_abc import FilterABC, LoggingFilterAbcMixin
 from pliptv.utils.log.decorators import func_logger
-
-
-def _get_config(config, group: str) -> List[Any]:
-    return list(filter(lambda e: group in e["names"], config.epg.matching_groups))
 
 
 class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
@@ -30,6 +26,8 @@ class EpgFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         Returns:
             Stream meta data
         """
+        # TODO: load data from csv file (epg.csv)
+        # and match stream name with country
         epg: Epg = get_epg_index(self.filter_config.index_url)
         if not epg:
             raise AssertionError

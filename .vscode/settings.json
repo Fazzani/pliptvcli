@@ -8,6 +8,7 @@
   "black-formatter.args": ["--line-length", "150"],
   "cSpell.words": [
     "figlet",
+    "pliptv",
     "strm"
   ]
 }
