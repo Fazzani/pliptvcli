@@ -8,7 +8,7 @@ with open("requirements.txt", "r") as f:
 
 setuptools.setup(
     name="xplcli",
-    version="0.1.4",
+    version="0.1.6",
     author="Heni FAZZANI",
     author_email="heni.fazzani@gmail.com",
     description="Simple extensible m3u playlist manager cli",

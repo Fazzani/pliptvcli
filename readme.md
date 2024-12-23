@@ -19,18 +19,29 @@ The full filter list is located [here](pliptv/pl_filters)
 
 All filters are configurable by a configuration file. An example of this file is located [here](data/config_playlist.yaml)
 
-## Examples
+## Setup
 
 ```bash
-pip install xplcli
-# or docker version
-docker run --rm -e "PL=$PL" -v "${PWD}:/data" synker/xpl:latest
+# environment variables to define
+
+export AZURE_SYNKER_BLOB_CONTAINER=playlists
+export AZURE_SYNKER_BLOB_CNX_STRING=DefaultEndpointsProtocol=https;AccountName={{ACCOUNT}}
+export BITLY_ACCESS_TOKEN={{TOKEN}}
+export PL=http://www.host-iptv.com/get.php?username={{xxxxxx}}&password={{xxxxxx}}&type=m3u_plus&output=ts
+export STRM_OUTPUT_PATH=/mnt/streams
+export CONFIG_FILE_PATH=/home/config.yml
+export OUTPUT_PATH=/home
+
+pip install --no-input xplcli
+# crontab with conda
+conda create -n xpl python=3.9
+0 5 * * 4 conda activate xpl && pip install --upgrade --no-input xplcli && xpl --export --auto --vod
 ```
 
 ## TODO
 
-- [ ] Enhancing reporting by filter
-- [ ] Enhancing tests
-- [ ] Enhancing playlist export (gist, azure, etc...)
+- [ ] improve reporting by filter
+- [ ] improve tests
+- [ ] improve playlist export (gist, azure, etc...)
 - [ ] Ability to execute an external (remote) filter from url
 - [ ] add github action pipeline for code analysis (PR)
