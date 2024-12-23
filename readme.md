@@ -1,7 +1,7 @@
 # XPL
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8d237c0d5f74b51816780562d7ad871)](https://app.codacy.com/manual/tunisienheni/pliptvcli?utm_source=github.com&utm_medium=referral&utm_content=Fazzani/pliptvcli&utm_campaign=Badge_Grade_Dashboard)
-[![Build Status](https://dev.azure.com/fazzaniheni/XPL/_apis/build/status/Fazzani.pliptvcli?branchName=master)](https://dev.azure.com/fazzaniheni/XPL/_build/latest?definitionId=1&branchName=master)
+[![Upload Python Package](https://github.com/Fazzani/pliptvcli/actions/workflows/python-publish.yml/badge.svg)](https://github.com/Fazzani/pliptvcli/actions/workflows/python-publish.yml)
 
 Simple and extensible m3u playlist manager cli.
 
@@ -22,6 +22,8 @@ All filters are configurable by a configuration file. An example of this file is
 ## Examples
 
 ```bash
+pip install xplcli
+# or docker version
 docker run --rm -e "PL=$PL" -v "${PWD}:/data" synker/xpl:latest
 ```
 
@@ -31,3 +33,4 @@ docker run --rm -e "PL=$PL" -v "${PWD}:/data" synker/xpl:latest
 - [ ] Enhancing tests
 - [ ] Enhancing playlist export (gist, azure, etc...)
 - [ ] Ability to execute an external (remote) filter from url
+- [ ] add github action pipeline for code analysis (PR)
