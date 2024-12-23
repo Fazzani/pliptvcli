@@ -4,8 +4,8 @@ with open("readme.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="xpl",
-    version="0.1.8",
+    name="xplcli",
+    version="0.1.0",
     author="Heni FAZZANI",
     author_email="heni.fazzani@gmail.com",
     description="Simple extensible m3u playlist manager cli",
