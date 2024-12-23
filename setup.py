@@ -3,9 +3,12 @@ import setuptools
 with open("readme.md", "r") as fh:
     long_description = fh.read()
 
+with open("requirements.txt") as f:
+    required = f.read().splitlines()
+
 setuptools.setup(
     name="xplcli",
-    version="0.1.2",
+    version="0.1.3",
     author="Heni FAZZANI",
     author_email="heni.fazzani@gmail.com",
     description="Simple extensible m3u playlist manager cli",
@@ -14,6 +17,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Fazzani/pliptvcli",
     packages=setuptools.find_packages(),
+    install_requires=required,
+    license="MIT",
     entry_points={"console_scripts": ["xpl=pliptv.main:main"]},
     classifiers=[
         "Programming Language :: Python :: 3",
