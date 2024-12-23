@@ -96,14 +96,14 @@ def main(auto: bool, export: bool, is_generation_vod_enabled: bool, is_cache_ena
                 os.getenv("CONFIG_FILE_PATH")
                 if os.getenv("CONFIG_FILE_PATH") is not None
                 else os.path.join(
-                    os.path.dirname(os.path.realpath(__file__)),
+                    os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
                     "data/config_playlist.yaml",
                 )
             ),
             "playlist_output_path": (
                 os.getenv("OUTPUT_PATH")
                 if os.getenv("OUTPUT_PATH") is not None
-                else os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
+                else os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "data")
             ),
         }
     )

@@ -14,7 +14,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Fazzani/pliptvcli",
     packages=setuptools.find_packages(),
-    entry_points={"console_scripts": ["xpl=main:main"]},
+    entry_points={"console_scripts": ["xpl=pliptv.main:main"]},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
