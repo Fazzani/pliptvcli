@@ -10,6 +10,7 @@ setuptools.setup(
     author_email="heni.fazzani@gmail.com",
     description="Simple extensible m3u playlist manager cli",
     long_description=long_description,
+    include_package_data=True,
     long_description_content_type="text/markdown",
     url="https://github.com/Fazzani/pliptvcli",
     packages=setuptools.find_packages(),
