@@ -3,12 +3,12 @@ import setuptools
 with open("readme.md", "r") as fh:
     long_description = fh.read()
 
-with open("requirements.txt") as f:
+with open("requirements.txt", "r") as f:
     required = f.read().splitlines()
 
 setuptools.setup(
     name="xplcli",
-    version="0.1.3",
+    version="0.1.4",
     author="Heni FAZZANI",
     author_email="heni.fazzani@gmail.com",
     description="Simple extensible m3u playlist manager cli",
