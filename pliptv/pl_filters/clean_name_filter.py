@@ -6,6 +6,8 @@ from pliptv.models.streams import Stream
 from pliptv.pl_filters.filter_abc import FilterABC, LoggingFilterAbcMixin
 from pliptv.utils.log.decorators import func_logger
 
+regex_white_spaces = re.compile(r"(\s)+")
+
 
 class CleanNameFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
     def __init__(self, config: PlaylistConfig):
@@ -17,6 +19,9 @@ class CleanNameFilter(FilterABC, metaclass=LoggingFilterAbcMixin):
         for reg in self.filter_config.regex:
             regex = re.compile(reg, re.I | re.DOTALL)
             value.meta.display_name = regex.sub("", value.meta.display_name).strip()
+
         for replacement in self.filter_config.replacements:
             value.meta.display_name = value.meta.display_name.replace(replacement, "")
+
+        value.meta.display_name = regex_white_spaces.sub(" ", value.meta.display_name)
         return value
