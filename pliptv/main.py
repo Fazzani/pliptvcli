@@ -33,6 +33,7 @@ LOG: logging.Logger = logging.getLogger(__name__)
 STRM_EXT = ".strm"
 TV_SERIES_REGEX = re.compile(r"(.+[\s])*(s\d{1,4})[^\w](e\d{1,4})", flags=re.IGNORECASE)
 IS_ARABIC_REGEX = re.compile(r"[\u0600-\u06FF]")
+REMOVE_YEAR_REGEX = re.compile(r"(20|19)\d{2}")
 
 # TODO: combine using click with env variables and remove 'ask_information'
 # TODO: notification when processing finished
@@ -213,8 +214,13 @@ def vod_processing(vod: bool, pl_info: dict[str, Any], playlist_config: Playlist
             vod_list,
             desc="VOD strm processing",
         ):
+            output_path: str = videos_output_path
+
             match_tv_series = TV_SERIES_REGEX.search(stream.meta.display_name)
-            output_path: str = os.path.join(tv_series_output_path, match_tv_series.group(1).strip()) if match_tv_series else videos_output_path
+            if match_tv_series:
+                tv_folder_name = REMOVE_YEAR_REGEX.sub("", match_tv_series.group(1)).strip()
+                output_path: str = os.path.join(tv_series_output_path, tv_folder_name)
+
             strm_output_fullpath: str = os.path.join(output_path, stream.meta.display_name.strip() + STRM_EXT)
             try:
                 created_streams.append(strm_output_fullpath)
