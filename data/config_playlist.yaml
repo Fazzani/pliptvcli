@@ -7,11 +7,11 @@ removeheadersfilter:
 
 vodfilter:
   priority: 1
-  regex: 
-  - "\\.(mkv|avi|mp4|mpe?g|mov|wmv|flv|webm)$"
+  regex:
+    - "\\.(mkv|avi|mp4|mpe?g|mov|wmv|flv|webm)$"
   hidden_groups:
-  - "\\b(وثائقيه)|(ألمانية)|(وثائقية)|(خليجية)|(جزائرية)|(مسيحية)|(يعرض)|(انمي)|(آسيوي)|(بودكاست)|(أجنبي)|(مدبلج)|(مترجم)|(منوعات)|(برامج)|(ليبيا)|(مغربية)|(أجنبية)|(آسيوية)|(أسيوية)|(هندية)|(أجنبيه)|(مدبلجة)|(رعب)|(ألمانيه)|(مترجمة)|(تركية)|(اغاني)|(أغاني)|(طرب)|(رياضه\\sمتنوعه)\\b"
-  - "\\b(handball)|(F1)|(moto)|(football)|(wwe)|(cyclisme)|(golf)|(basketball)|(wrc)|(subs)|(dub)|(play)|(golf)|(nordic)|(amazon)|(ESPAÑA)|(persian)|(DOCU\\-SERIES)|(OSN\\+)|(cam)|(Geo)|(kid)\\b"
+    - "\\b(وثائقيه)|(ألمانية)|(وثائقية)|(خليجية)|(جزائرية)|(مسيحية)|(يعرض)|(انمي)|(آسيوي)|(بودكاست)|(أجنبي)|(مدبلج)|(مترجم)|(منوعات)|(برامج)|(ليبيا)|(مغربية)|(أجنبية)|(آسيوية)|(أسيوية)|(هندية)|(أجنبيه)|(مدبلجة)|(رعب)|(ألمانيه)|(مترجمة)|(تركية)|(اغاني)|(أغاني)|(طرب)|(رياضه\\sمتنوعه)\\b"
+    - "\\b(handball)|(F1)|(moto)|(football)|(wwe)|(cyclisme)|(golf)|(basketball)|(wrc)|(subs)|(dub)|(play)|(golf)|(nordic)|(amazon)|(ESPAÑA)|(persian)|(DOCU\\-SERIES)|(OSN\\+)|(cam)|(Geo)|(kid)\\b"
 
 displaynamefilter:
   priority: 2
@@ -57,12 +57,12 @@ cleannamefilter:
     - "[!$%&«»°\"\\(\\)\\*\\+,\\.:/;<=>?@\\[\\]\\^_`{|}~◉\\-]"
     - \\b(hevc)|(h265)|(XTRA)|(Subs)|(film)\\b"
     - "\\b(sh|tu|us|jp|gb|ar|kr|es|de|fr|co|ca|dk|no|it|eg|nl)\\b$"
-  replacements: 
+  replacements:
     - "عادل إمام"
     - "اسماعيل ياسين"
     - "محمد سعد"
     - "أحمد زكي"
-    
+
 groupingfilter:
   priority: 21
   map:
@@ -73,7 +73,7 @@ groupingfilter:
     Osn: "\\bosn\\b"
     Tunisia: "tunisi(e|a)?"
   hidden_groups:
-   - "\\b(PREMIUM\\sPLAY)\\b"
+    - "\\b(PREMIUM\\sPLAY)\\b"
 
 piconfilter:
   priority: 25
@@ -83,27 +83,24 @@ epgfilter:
   enabled: false
   priority: 20
   index_url: https://raw.githubusercontent.com/Fazzani/grab/master/out/epg.csv
-  matching_groups: 
-    - 
-      names: 
+  matching_groups:
+    - names:
         - BeinSports
         - BeinSports__ar
         - BeinSports__qa
-      country: 
+      country:
         - qa
-    - 
-      names: 
+    - names:
         - Tunisia
         - Tunisia__tn
         - Tunisia__ar
-      country: 
+      country:
         - tn
-    - 
-      names: 
+    - names:
         - Osn
         - Mbc
         - Rotana
-      country: 
+      country:
         - ar
         - ae
         - sa
@@ -112,12 +109,11 @@ epgfilter:
         - lb
         - ma
         - dz
-    - 
-      names: 
+    - names:
         - France
         - France__fr
         - BeinSports__fr
-      country: 
+      country:
         - fr
         - ca
         - ch
